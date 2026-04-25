@@ -1,0 +1,21 @@
+/*Escribir una función que verifique si un caracter introducido es un dígito o no.*/
+Accion CaracSIoNO Es
+    Ambiente
+        c:caracter
+        Funcion Digito(c: caracter): logico
+            Si (c >= "0") Y (c <= "9") Entonces
+                Digito:= Verdadero
+            Sino
+                Digito:= Falso
+            FinSi
+        FinFuncion
+    Proceso
+        Escribir("Ingrese un Caracter:")
+        Leer(c)
+        Si Digito(C) Entonces
+            Escribir("Es digito")
+        Sino
+            Escribir("No es digito")
+        Fin_Si
+Fin_Accion
+
