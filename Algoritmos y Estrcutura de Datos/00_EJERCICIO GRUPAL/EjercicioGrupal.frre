@@ -1,0 +1,25 @@
+/*Se registran cantidades. 
+El proceso finaliza cuando el acumulado es igual a un valor previamente ingresado. 
+Se desea informar el total acumulado. */
+ACCION Cantidades ES
+Ambiente 
+    n, cant, acu: real
+Proceso
+    ESCRIBIR("ingresar el valor al que se quiere llegar")
+    LEER(n)
+    ESCRIBIR("ingrese la cantidad del producto")
+    LEER(cant)
+    acu:=0
+
+    si cant > 0 hacer
+        repetir
+            acu:= acu + cont
+            hasta que acu  = n
+        ESCRIBIR("se llego a lo acumulado", acu)
+    sino 
+        ESCRIBIR("la cantidad del producto ingresado tiene que ser positivo")
+    fin si 
+
+fin accion
+
+//Integrantes: Halier Fiorella, Gomez Agustin, Sanchez Santiago, Davila Matias, Fernandez Lautaro

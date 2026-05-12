@@ -1,0 +1,35 @@
+/*Diseñe un algoritmo que muestre un menú con las opciones sumar, restar, multiplicar y dividir, el algoritmo
+solicitará una opción y realizará la tarea elegida, se debe usar un procedimiento para mostrar el menú, pedir los datos
+en el algoritmo principal y después usar funciones para realizar los cálculos.*/
+
+Accion menu Es
+    Ambiente
+        nro1,nro2: Entero
+        Result: Real
+        opcion: Caracter
+
+        Procedimiento menu  Es
+            Escribir("Ingrese la operacion a realizar")
+            Escribir(Ingrese + Para  )
+            Escribir(Ingrese - Para )
+            Escribir(Ingrese * Para )
+            Escribir(Ingrese / Para )
+        Fin_Procedimiento
+
+        Funcion suma (n1,n2):Entero Es
+        suma:= n1 + n2
+        Fin_Funcion
+
+
+    Proceso
+        Escribir("Ingrese los 2 operadores")
+        Leer(nro1,nro2)
+        menu
+        Leer(opcion)
+        Segun opcion HACER
+            "+": result := suma(nro1,nro2)
+            "-"
+            "*"
+            "/"
+        Fin_Segun
+        Fin_Accion

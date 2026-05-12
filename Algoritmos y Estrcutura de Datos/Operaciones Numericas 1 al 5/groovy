@@ -1,0 +1,12 @@
+/*Suponga que los estados iniciales de K, Q y DOS son 4, 7 y 10. Especifique cuáles son los estados iniciales
+y finales de cada una de las variables después de las siguientes asignaciones.
+*/
+K=4;Q=7;DOS=10
+1.01. TOT := K*(DOS-Q) -->12
+1.02. D := DOS/K + Q * 2 -->16,5
+1.03. E := TRUNC (Q*0,8 - DOS/3) -->2
+1.04. R := REDOND (Q/(3/K)) -->9
+1.05. K := ABSO (K-Q) + 2 * DOS -->23
+1.06. RESULTADO := REDOND (ABSO((K-DOS)/Q)+TRUNC(1,5)) -->3
+
+
