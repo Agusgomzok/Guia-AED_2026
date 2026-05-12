@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*La secuencia de socios del problema anterior tiene el inconveniente de que los números están ordenados pero 
 no son correlativos. Se desea generar una secuencia que contenga los números de socios que no figuran en la 
 secuencia de socios.*/
@@ -70,4 +71,78 @@ ACCION 1.05 ES
                 AVZ(socios, v)
             FIN_SI
         FIN_MIENTRAS
+=======
+/*La secuencia de socios del problema anterior tiene el inconveniente de que los números están ordenados pero 
+no son correlativos. Se desea generar una secuencia que contenga los números de socios que no figuran en la 
+secuencia de socios.*/
+ACCION Nombre_Accion ES
+    Ambiente
+        socios,nosocios: secuencia de enteros
+        v, aux, i: Entero
+    Proceso
+        ARR(socios); AVZ(socios, v)
+        CREAR(nosocios)
+        aux := v
+        AVZ(socios, v)
+        MIENTRAS NFDS(socios) HACER
+                PARA i := aux + 1 HASTA v - 1 HACER
+                    ESCRIBIR(nosocios, i)
+                FIN_PARA
+            aux:= v
+            AVZ(socios, v)
+        FIN_MIENTRAS
+FIN_ACCION
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ACCION 1.05 ES
+    Ambiente
+        socios,nosocios: secuencia de enteros
+        v, aux, i: entero
+    Proceso
+        ARR(socios)
+        AVANZAR(socios, v)
+        CREAR(nosocios)
+        aux := V
+        AVANZAR(socios, v)
+        AVANZAR(socios, V)
+        MIENTRAS NFDS(socios) HACER
+            SI (v - aux > 1) ENTONCES
+                PARA i := aux + 1 a v-1 HACER
+                    ESCRIBIR(nosocios,i)
+                FIN_PARA
+                aux:= v
+                AVZ(socios, v)
+            FIN_SI
+        FIN_MIENTRAS
+>>>>>>> 3cecf56 (11/05)
 FIN_ACCION

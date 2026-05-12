@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ACCION EJE-2.2.1 ES
     Ambiente
             Fecha = Registro
@@ -51,4 +52,59 @@ ACCION EJE-2.2.1 ES
 
 
         
+=======
+ACCION EJE-2.2.1 ES
+    Ambiente
+            Fecha = Registro
+                aa:entero
+                mm:1..12
+                dd:1..31
+            Fin_Registro
+            Alumno = Registro
+                Apynom: AN(40)
+                Carrera : ("ISI", "IEM", "IQ")
+                Legajo: Entero
+                Fecha_nac: Fecha
+                Fecha:ing: Fecha
+                DNI: N(8)
+                sexo:("M", "F")
+                Fecha_ult_ex: Fecha
+                nota: Entero
+            Fin_Registro
+
+        arch_alu: archivo de Alumno
+        alu, aluIQ: Alumno
+
+        AlumnoISI = Registro
+                Apynom: AN(40)
+                Legajo: N(6)
+                Fecha:ing: Fecha
+                DNI: N(8)
+                sexo:("M", "F")
+        Fin_Registro
+    Proceso
+        ABRIR E/(arch_alu); LEER(arch_alu, alu)
+        ABRIR E/(archivo); ABRIR /S(AlumnoISI)
+        ESCRIBIR("Nro_Legajo Apellido_nombre documento carrera")
+
+        MIENTRAS NFDS(arch_alu) HACER
+            ESCRIBIR(alu.legajo, alu.apynom, alu.DNI, alu.Carrera)
+
+            Si alu.carrera = "IQ" ENTONCES
+                aluIQ := alu
+                ESCRIBIR(alumnosIQ, aluIQ)
+                
+            SINO
+                SI (alu.carrera = "ISI") ENTONCES
+                AluISI.apynom := alu.apynom
+                
+                    
+                FIN_SI
+            FIN_SI
+            
+        FIN_MIENTRAS
+
+
+        
+>>>>>>> 3cecf56 (11/05)
 FIN_ACCION

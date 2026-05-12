@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*Dada una secuencia de enteros que almacena la cantidad de habitantes de las ciudades capitales de las 23 
 provincias de la República Argentina, discriminados 4 categorías: menores de 18 años (varones y mujeres) y mayores 
 de 18 años (varones y mujeres). Se pide determinar la población total y los siguientes porcentajes: masculinos, 
@@ -30,4 +31,38 @@ ACCION Nombre_Accion ES
         MIENTRAS NFDS(habitantes) HACER
             
         FIN_MIENTRAS
+=======
+/*Dada una secuencia de enteros que almacena la cantidad de habitantes de las ciudades capitales de las 23 
+provincias de la República Argentina, discriminados 4 categorías: menores de 18 años (varones y mujeres) y mayores 
+de 18 años (varones y mujeres). Se pide determinar la población total y los siguientes porcentajes: masculinos, 
+femeninos, mayores de 18 y menores de 18. */
+ACCION Nombre_Accion ES
+    Ambiente
+        habitantes: secuencia de entero
+        i: entero
+        menor_h,menor_m,mayor_h,mayor_m: entero
+        tot_general, total_h, total_m, total_mayor, total_menor: entero
+        porc_masc, porc_fem, porc_may, porc_men: real
+    Proceso
+        ARR(habitantes)
+
+        PARA i := 1 HASTA 23 HACER
+            AVANZAR(habitantes|, menor_h)
+            AVANZAR(habitantes|, menor_m)
+            AVANZAR(habitantes|, mayor_h)
+            AVANZAR(habitantes|, mayor_m)
+        FIN_PARA
+        AVANZAR(habitantes|, menor_h)
+        AVANZAR(habitantes|, menor_m)
+        AVANZAR(habitantes|, mayor_h)
+        AVANZAR(habitantes|, mayor_m)
+
+        
+
+
+
+        MIENTRAS NFDS(habitantes) HACER
+            
+        FIN_MIENTRAS
+>>>>>>> 3cecf56 (11/05)
 FIN_ACCION

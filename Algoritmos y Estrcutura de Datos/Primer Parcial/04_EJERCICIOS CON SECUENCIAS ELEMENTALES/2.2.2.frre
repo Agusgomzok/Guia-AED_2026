@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*Dada una secuencia de caracteres de entrada, desarrollar un algoritmo que produzca 2 secuencias de salida, una con los caracteres "numéricos" y otra con los que no lo son.
 
 Informar al final, cantidad de caracteres de cada secuencia de salida
@@ -31,3 +32,38 @@ ACCION 2.2.2 ES
         ESCRIBIR("La cantidad de caracter numerico es de: ",Cont_n)
         ESCRIBIR("La cantidad de caracter numerico es de: ",Cont_c)
 FIN_ACCION
+=======
+/*Dada una secuencia de caracteres de entrada, desarrollar un algoritmo que produzca 2 secuencias de salida, una con los caracteres "numéricos" y otra con los que no lo son.
+
+Informar al final, cantidad de caracteres de cada secuencia de salida
+
+Ejemplo: Si en la secuencia de entrada viniera A125EB% en la salida debería ir
+
+salida1 --> 125
+
+salida2 --> AEB%*/
+ACCION 2.2.2 ES
+    Ambiente
+        principal,copia1n,copia2c: secuencia de caracter
+        v: caracter
+        Cont_n: Entero
+        Cont_c:Entero
+    Proceso
+        ARR(principal),AVANZAR(principal, v)
+        CREAR(copia1n),CREAR(copia2c)
+        Cont_c:=0, Cont_n:=0
+        MIENTRAS NFDS(principal) HACER 
+            SI (v >= "0" y v<= "9") ENTONCES
+                escribir(copia1n,v)
+                Cont_n:= Cont_n + 1
+            SINO
+                ESCRIBIR(copia2c, v)
+                Cont_c:= Cont_c + 1
+            FIN_SI
+            AVANZAR(principal, v)
+        FIN_MIENTRAS
+        CERRAR(principal), CERRAR(copia1n), CERRAR(copia2c)
+        ESCRIBIR("La cantidad de caracter numerico es de: ",Cont_n)
+        ESCRIBIR("La cantidad de caracter numerico es de: ",Cont_c)
+FIN_ACCION
+>>>>>>> 3cecf56 (11/05)

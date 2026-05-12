@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*Escribir una función que calcule el total de una factura tras aplicarle el IVA. La función debe recibir la cantidad sin IVA y el porcentaje de IVA a aplicar, y devolver el total de la factura. Si se invoca la función sin pasarle el porcentaje de IVA, deberá aplicar un 21%.*/
 ACCION caclulandoando ES
     Ambiente
@@ -14,4 +15,22 @@ ACCION caclulandoando ES
         ESCRIBIR("Ingrese IVA del producto")
         Leer(iva)
         total:= calcular_producto(precio, iva)
+=======
+/*Escribir una función que calcule el total de una factura tras aplicarle el IVA. La función debe recibir la cantidad sin IVA y el porcentaje de IVA a aplicar, y devolver el total de la factura. Si se invoca la función sin pasarle el porcentaje de IVA, deberá aplicar un 21%.*/
+ACCION caclulandoando ES
+    Ambiente
+        precio, iva, total:Real
+        Funcion calcular_producto(precio_sv,porcentaje_iva:Real):Real
+            Si porcentaje_iva = 0 Entonces
+                porcentaje_iva:= 0.21
+            Fin_Si
+            calcular_producto:= precio_sv + (precio_sv*porcentaje_iva)
+        Fin_Funcion
+    Proceso
+        Escribir("Ingrese el precio del producto:")
+        Leer(precio)
+        ESCRIBIR("Ingrese IVA del producto")
+        Leer(iva)
+        total:= calcular_producto(precio, iva)
+>>>>>>> 3cecf56 (11/05)
 FIN_ACCION

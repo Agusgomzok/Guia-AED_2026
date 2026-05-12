@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*Durante la Feria del Libro se relevó información sobre las editoriales participantes y los libros que presentan. Los
 datos fueron almacenados en dos secuencias de caracteres, las cuales deben ser procesadas para obtener distintos
 informes.
@@ -114,4 +115,122 @@ ACCION Parcial1_2025A ES
         FIN_MIENTRAS
         ESCRIBIR("la mayor cantidad de libros es: ", mayor, "y la provincia es:",p1,p2)
         CERRAR(editoriales); CERRAR(libros); CERRAR(Literatura)
+=======
+/*Durante la Feria del Libro se relevó información sobre las editoriales participantes y los libros que presentan. Los
+datos fueron almacenados en dos secuencias de caracteres, las cuales deben ser procesadas para obtener distintos
+informes.
+Datos de Entrada
+A. Secuencia de Editoriales:
+Cada editorial está representada de la siguiente manera:
+- Nombre de la editorial (cantidad indeterminada de caracteres, finaliza con ‘&’)
+- Provincia (2 caracteres que representan un número del ‘01’ al ‘23’)
+Ejemplo: Planeta&01Sudamericana&03...
+B. Secuencia de Libros:
+Por cada editorial hay una cantidad indeterminada de libros, separados por el carácter ‘@’. Cada libro contiene los
+siguientes campos:
+- Tema (1 carácter): L = Literatura / C = Ciencia / A = Autoayuda y desarrollo personal / I = Infantiles
+- Cantidad de páginas: (3 caracteres, por ejemplo 245)
+- Nombre del libro: (cantidad indeterminada de caracteres, finaliza con ‘&’)
+- Resumen: texto libre (finaliza con el carácter ‘#’).
+Las palabras están separadas por una cantidad variable de espacios en blanco.
+Ejemplo:
+L245Elprincipito&Una vida a vivir y aprender.#@C120FisicaParaTodos&Conceptos basicos para jovenes.#...
+Se solicita escribir un algoritmo en pseudocódigo que permita:
+a) Generar una secuencia de salida con los nombres de los libros de tema ‘Literatura’ (tema = ‘L’) que tengan más
+de 200 y hasta 300 páginas inclusive.
+b) Para cada editorial, informar la longitud promedio de los resúmenes, expresada en cantidad de palabras (una
+palabra se define como una secuencia de caracteres alfabéticos, separada por espacios en blanco).
+c) Indicar en qué provincia se encuentra la editorial con mayor cantidad de libros presentados.
+En caso de ser necesario, escribir una función auxiliar para convertir secuencias de caracteres a valores numéricos.*/
+
+ACCION Parcial1_2025A ES
+    Ambiente
+        Editoriales,Libros,Literatura: Secuencia de caracteres
+        ed, lib, p1, p2: caracter
+        mayor, clib, cpal, cpag, i: entero
+
+        Función ConNum (n:caracter): Entero Es
+            Segun n Hacer
+                "0": ConNum:= 0
+                "1": ConNum:= 1
+                "2": ConNum:= 2
+                "3": ConNum:= 3
+                "4": ConNum:= 4
+                "5": ConNum:= 5
+                "6": ConNum:= 6
+                "7": ConNum:= 7 
+                "8": ConNum:= 8
+                "9": ConNum:= 9
+            FinSegun
+        FinFuncion
+        
+        Proceso
+        ARRANCAR(editoriales); ARRANCAR(libros); CREAR(Literatura)
+        AVANZAR(editoriales, ed); AVANZAR(libros, lib)
+        mayor:= 0
+
+        MIENTRAS NFDS(Editoriales) HACER
+            escribir("Editorial:")
+            
+            MIENTRAS (ed <> "&") HACER
+                ESCRIBIR(e)
+                AVANZAR(Editoriales, e)
+            FIN_MIENTRAS
+                AVANZAR(Editoriales, e) // estoy en prov
+                clib:=0; cpal:=0 //contador de libros y palabras
+
+            MIENTRAS (lib <> "@") HACER
+                clib:= clib + 1
+                SI (lib = "L") ENTONCES
+                    AVANZAR(libros, lib)
+                    cpag := 0
+                    PARA I := 1 HASTA 3 HACER
+                        cpag:= cpag * 10 + ConNum (Lib)
+                        AVANZAR(libros, lib)
+                    FIN_PARA
+
+                    SI cpag > 200 y cpag <= 300 ENTONCES
+                        MIENTRAS (lib <> "&") HACER
+                            ESCRIBIR(Literatura, lib)
+                            AVANZAR(Libros, Lib)   
+                        FIN_MIENTRAS
+                        ESCRIBIR(Literatura, "$") // SEPARAR NOMBRE LIBRO
+                    SINO
+                        MIENTRAS (lib <> "&") HACER
+                            AVANZAR(libros, lib)   
+                        FIN_MIENTRAS
+                SINO
+                    MIENTRAS (lib <> "&") HACER
+                        AVANZAR(libros, lib)
+                    FIN_MIENTRAS
+                FIN_SI
+                AVANZAR(Libros, lib)
+            FIN_MIENTRAS
+
+            MIENTRAS (lib <> "#") HACER
+                MIENTRAS (lib = " ") HACER
+                    AVANZAR(Libros, Lib)
+                FIN_MIENTRAS
+                cpal:= cpal + 1
+                MIENTRAS (lib <> "") y (lib <> "#") HACER
+                    AVANZAR(libros, lib)
+                FIN_MIENTRAS    
+            FIN_MIENTRAS
+            AVANZAR(libros, lib) //avanza el @
+            
+
+            ESCRIBIR("promedio de palabras en los resumenes es de:", cpal/clib)
+            SI (clib > mayor) ENTONCES
+                mayor:= clib
+                pl:=ed
+                AVANZAR(editoriales, ed)
+                p2:=ed
+            SINO
+                AVANZAR(editoriales, ed)
+            FIN_SI
+            AVANZAR(editoriales, ed)
+        FIN_MIENTRAS
+        ESCRIBIR("la mayor cantidad de libros es: ", mayor, "y la provincia es:",p1,p2)
+        CERRAR(editoriales); CERRAR(libros); CERRAR(Literatura)
+>>>>>>> 3cecf56 (11/05)
 FIN_ACCION

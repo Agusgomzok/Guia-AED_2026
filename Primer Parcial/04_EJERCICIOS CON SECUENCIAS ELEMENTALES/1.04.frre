@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*Se dispone de una secuencia de números de socios, y se desea saber la cantidad de socios que están 
 registrados.*/
 ACCION ejercicio4 ES
@@ -38,4 +39,46 @@ escribir ("")
 
 8379801340983259821659682045 nfds 
 
+=======
+/*Se dispone de una secuencia de números de socios, y se desea saber la cantidad de socios que están 
+registrados.*/
+ACCION ejercicio4 ES
+    Ambiente
+        sec:secuencia de entero
+        v:entero
+        cont:entero
+    Proceso
+        cont:= 0
+        ARR(sec)
+        AVZ(sec, v)
+        MIENTRAS NFDS(sec) HACER
+            cont:= cont + 1
+            AVZ(sec, v)
+        FIN_MIENTRAS
+        ESCRIBIR("La cantidad de socios son:", cont)
+        CERRAR(sec)
+FIN_ACCION
+
+
+2837226864
+sec:secuencia de entero
+v:entero
+cont:entero
+i:entero
+
+proceso
+ABRIR (sec)
+AVZ(sec,v)
+
+mientras NFDS(sec) hacer
+    para i:=1 a 10 hacer
+        AVZ(sec,v)
+    finpara
+    cant:=cont+1
+FIN_MIENTRAS
+escribir ("")
+
+8379801340983259821659682045 nfds 
+
+>>>>>>> 3cecf56 (11/05)
 se dispone de una secuencia de numeros de socios separados por &, se desea saber la cantidad de socios 

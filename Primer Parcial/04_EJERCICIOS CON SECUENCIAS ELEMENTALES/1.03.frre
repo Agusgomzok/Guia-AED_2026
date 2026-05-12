@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*Se dispone de una secuencia de caracteres y se desea obtener una secuencia de salida que resulte de copiar la 
 secuencia de entrada, descartando el caracter "$". */
 ACCION Ejercicio3 ES
@@ -16,4 +17,24 @@ ACCION Ejercicio3 ES
         FIN_MIENTRAS
         CERRAR(sec)
         CERRAR(sal)
+=======
+/*Se dispone de una secuencia de caracteres y se desea obtener una secuencia de salida que resulte de copiar la 
+secuencia de entrada, descartando el caracter "$". */
+ACCION Ejercicio3 ES
+    Ambiente
+        sec, sal:secuencia de caracter
+        v:caracter
+
+    Proceso
+        ARR(sal)
+        CREAR(sal)
+        MIENTRAS NFDS(sec) HACER
+            SI (V <> "$") ENTONCES
+                ESCRIBIR(sal,v)    
+            FIN_SI
+            AVZ(sec,v)
+        FIN_MIENTRAS
+        CERRAR(sec)
+        CERRAR(sal)
+>>>>>>> 3cecf56 (11/05)
 FIN_ACCION

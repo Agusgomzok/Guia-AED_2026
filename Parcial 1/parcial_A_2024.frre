@@ -1,0 +1,77 @@
+ACCION parcial_A_2025 ES
+    Ambiente
+        sec1:secuencia de caracter; v1:caracter
+        sec2, sal:secuencia de enteros; v2:enteros
+
+
+        //variables para sec 1
+        nom_suc, car_ticket: caracter
+        cantticket, c, d, u, i : entero
+
+        //variables para sec 2
+        f_pago, nrotiket, cantart, importe: entero
+
+        //variables etadisticas sucursal
+        maximporte, maxticket: entero
+
+
+        FUNCION ConNum(n:caracter):entero ES
+            SEGUN n HACER
+                "0":ConNum:= 0
+                "1":ConNum:= 1
+                "2":ConNum:= 2
+                "3":ConNum:= 3
+                "4":ConNum:= 4
+                "5":ConNum:= 5
+                "6":ConNum:= 6
+                "7":ConNum:= 7
+                "9":ConNum:= 8
+                "8":ConNum:= 9
+            FIN_SEGUN
+        FIN_FUNCION
+    Proceso
+        ARR(sec1); ARR(sec2); CREAR(sal)
+        AVZ(sec1, v1);
+        AVZ(sec2, v2);
+
+
+        MIENTRAS NFDS(sec1) HACER
+            MIENTRAS (v1 <> "&") HACER
+                AVANZAR(sec1, V1)
+            FIN_MIENTRAS
+            
+            AVANZAR(sec1, V1)//comemos al &
+
+            c:= ConNum(v1); AVANZAR(sec1, v1)
+            d:=ConNum(v1); AVANZAR(sec1, v1)
+            u:=ConNum(v1); AVANZAR(sec1, v1)
+
+            cantticket:= (c + 100) + (d * 10) + u
+
+            maximporte:= -1
+            maxticket:= 0
+
+            PARA I := 1 HASTA cantticket HACER
+                f_pago:= v2
+                AVANZAR(sec2, v2)
+
+                cantart:= v2
+                AVANZAR(sec2, v2)
+
+                importe:= v2
+                AVANZAR(sec2, v2)
+
+                SI (importe > 50000) ENTONCES
+                    ESCRIBIR(sal,nrotiket)
+                    ESCRIBIR(sal, importe)
+                FIN_SI
+                SI (importe > maximporte) ENTONCES
+                    maximporte:= importe
+                    maxticket:= nrotiket
+                FIN_SI
+            FIN_PARA
+
+            ESCRIBIR("ticket mayor importe:", maxticket, "|importe:", maximporte)
+        FIN_MIENTRAS
+        CERRAR(sec1); cerrar(sec2); cerrar(sal)
+FIN_ACCION

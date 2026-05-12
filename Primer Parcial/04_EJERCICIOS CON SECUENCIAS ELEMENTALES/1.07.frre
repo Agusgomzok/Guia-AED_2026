@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*Se tiene una secuencia de enteros que contiene todos los CUIT de los empleados de una empresa, la misma 
 termina con el CUIT 0. Para evitar largas esperas en los días de pago, la empresa necesita organizarlos de acuerdo al último dígito de su documento, generar una secuencia con los CUIT de las personas que su número de documento 
 termine con 0, 1, 2 o 3. */
@@ -16,4 +17,24 @@ ACCION Nombre_Accion ES
         FIN_MIENTRAS
         CERRAR(salida), CERRAR(empl
         eados)
+=======
+/*Se tiene una secuencia de enteros que contiene todos los CUIT de los empleados de una empresa, la misma 
+termina con el CUIT 0. Para evitar largas esperas en los días de pago, la empresa necesita organizarlos de acuerdo al último dígito de su documento, generar una secuencia con los CUIT de las personas que su número de documento 
+termine con 0, 1, 2 o 3. */
+ACCION Nombre_Accion ES
+    Ambiente
+        empleados, salida: secuencia de enteros
+        cuit: entero
+    Proceso
+        ARR(empleados),AVZ(empleados, cuit)
+        CREAR(salida)
+        MIENTRAS (cuit <> 0) HACER
+            SI (cuit DIV 10) MOD 10 < 4 ENTONCES
+                ESCRIBIR(salida,cuit)    
+            FIN_SI
+            AVANZAR(empleados, cuit)
+        FIN_MIENTRAS
+        CERRAR(salida), CERRAR(empl
+        eados)
+>>>>>>> 3cecf56 (11/05)
 FIN_ACCION
