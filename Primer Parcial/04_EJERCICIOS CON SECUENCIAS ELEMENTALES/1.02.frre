@@ -1,0 +1,21 @@
+/*Dada una secuencia de letras del alfabeto que finaliza con la letra "Z", contar cuantas consonantes hay en la 
+secuencia.*/
+
+ACCION Ejercicio2 ES
+    Ambiente
+        sec:secuencia de caracter
+        v:caracter
+        cont:entero
+        Vocal =  ("A","E","I","O","U")
+    Proceso
+        ARR(sec)
+        cont:=0
+        REPETIR
+            AVZ(sec, v)
+            SI (v <> Vocal) ENTONCES
+                cont:= cont + 1 
+            FIN_SI
+
+        HASTA QUE (v = "Z" )
+        ESCRIBIR("La cantidad de consonates son:", cont)
+FIN_ACCION

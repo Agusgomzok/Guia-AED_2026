@@ -1,0 +1,19 @@
+/*Dada una secuencia de letras del alfabeto que finaliza con una marca '*', contar cuantas letras "A" hay en la 
+secuencia.*/
+ACCION 1Secuencia ES
+    Ambiente
+        cont:entero
+        sec: secuencia de caracter
+        v:  caracter
+    Proceso
+        arr(sec)
+        cont:= 0
+        AVZ(sec, v)
+        MIENTRAS (v <> *) HACER
+            SI (v = "A") ENTONCES
+                cont:= cont + 1
+            FIN_SI
+            AVZ(sec, v)
+        FIN_MIENTRAS
+        ESCRIBIR("El total de letras A es: ",cont)
+FIN_ACCION

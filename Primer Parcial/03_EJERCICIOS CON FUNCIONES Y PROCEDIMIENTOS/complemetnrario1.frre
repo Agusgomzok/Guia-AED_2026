@@ -1,0 +1,17 @@
+/*Escribir una función que calcule el área de un círculo y otra que calcule el volumen de un cilindro usando la primera función.*/
+Accion AreayVol Es
+    Ambiente
+        r,h,ResultArea,ResultVol:Real
+        Funcion areaCirculo(radio:Real):Real
+            areaCirculo:= 3.1416 * radio *radio
+        Fin_Funcion
+        Funcion VolCilindro(radio,altura:Real):Real
+            VolCilindro:= areaCirculo(radio) * altura
+        Fin_Funcion
+    Proceso
+        Escribir("Ingrese el radio y Altura")
+        Leer(r);Leer(h)
+        ResultArea:= areaCirculo(r)
+        ResultVol:=VolCilindro(r,h)
+        Escribir("El area del circulo es", ResultArea,"y el volumen del cilindro es",ResultVol)
+Fin_Accion

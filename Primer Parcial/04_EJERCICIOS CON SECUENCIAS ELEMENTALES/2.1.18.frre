@@ -1,0 +1,29 @@
+ACCION 2.1.18 ES
+    Ambiente
+        sec,sal: secuencia de Caracter
+        v: Caracter
+        cont: Entero
+    Proceso
+        ARRANCAR(sec), AVANZAR(sec, v),CREAR(sal)
+
+        MIENTRAS NFDS(sec) HACER
+            cont:= 0
+            MIENTRAS (v <> "." ) HACER
+                MIENTRAS (v = "Blank") HACER
+                    AVANZAR(sec, v)    
+                FIN_MIENTRAS
+            FIN_MIENTRAS
+            cont:= cont + 1
+            SI (cont MOD 2 = 0) y (v = "M") ENTONCES
+                MIENTRAS (v <> "Blank") y (v <> ".") HACER
+                    ESCRIBIR(sal, v)
+                    AVANZAR(sec, v)
+                FIN_MIENTRAS
+            SINO
+                MIENTRAS (v <> "Blank") y (v <> ".") HACER
+                    AVANZAR(sec, v)
+                FIN_MIENTRAS
+            FIN_SI
+        FIN_MIENTRAS
+        CERRAR(sal)
+FIN_ACCION
