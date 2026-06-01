@@ -25,30 +25,93 @@ palabra se define como una secuencia de caracteres alfabéticos, separada por es
 c) Indicar en qué provincia se encuentra la editorial con mayor cantidad de libros presentados.
 En caso de ser necesario, escribir una función auxiliar para convertir secuencias de caracteres a valores numéricos.*/
 
-ACCION Parcial_A ES
+ACCION Parcial1_2025A ES
     Ambiente
-        sec_E, sec_L, salida: Secuencia de caracter
-        v_E, v_L: caracter
-        provincia: AF(2)
-        cont_pal: Entero //defino como secuencia de caracteres akfabeticos
-    Proceso
-        ARR(sec_E)//edit
-        ARR(sec_L)//lib
-        cont_pal:= 0
+        Editoriales,Libros,Literatura: Secuencia de caracteres
+        ed, lib, p1, p2: caracter
+        mayor, clib, cpal, cpag, i: entero
 
-        MIENTRAS NFDS(sec_E) HACER
-            MIENTRAS (v_E <> "&") y NFDS(sec_E) HACER
-                AVZ(sec_E, v_E)
-            FIN_MIENTRAS
-            AVANZAR(sec_E, v_E)
-
-            provincia:= v_E
-            AVANZAR(sec_E, v_E)
-            provincia:= provincia + v_E
-            AVANZAR(sec_E, v_E)
-
-
-            
-        FIN_MIENTRAS
+        Función ConNum (n:caracter): Entero Es
+            Segun n Hacer
+                "0": ConNum:= 0
+                "1": ConNum:= 1
+                "2": ConNum:= 2
+                "3": ConNum:= 3
+                "4": ConNum:= 4
+                "5": ConNum:= 5
+                "6": ConNum:= 6
+                "7": ConNum:= 7 
+                "8": ConNum:= 8
+                "9": ConNum:= 9
+            FinSegun
+        FinFuncion
         
+        Proceso
+        ARRANCAR(editoriales); ARRANCAR(libros); CREAR(Literatura)
+        AVANZAR(editoriales, ed); AVANZAR(libros, lib)
+        mayor:= 0
+
+        MIENTRAS NFDS(Editoriales) HACER
+            escribir("Editorial:")
+            
+            MIENTRAS (ed <> "&") HACER
+                ESCRIBIR(e)
+                AVANZAR(Editoriales, e)
+            FIN_MIENTRAS
+                AVANZAR(Editoriales, e) // estoy en prov
+                clib:=0; cpal:=0 //contador de libros y palabras
+
+            MIENTRAS (lib <> "@") HACER
+                clib:= clib + 1
+                SI (lib = "L") ENTONCES
+                    AVANZAR(libros, lib)
+                    cpag := 0
+                    PARA I := 1 HASTA 3 HACER
+                        cpag:= cpag * 10 + ConNum (Lib)
+                        AVANZAR(libros, lib)
+                    FIN_PARA
+
+                    SI cpag > 200 y cpag <= 300 ENTONCES
+                        MIENTRAS (lib <> "&") HACER
+                            ESCRIBIR(Literatura, lib)
+                            AVANZAR(Libros, Lib)   
+                        FIN_MIENTRAS
+                        ESCRIBIR(Literatura, "$") // SEPARAR NOMBRE LIBRO
+                    SINO
+                        MIENTRAS (lib <> "&") HACER
+                            AVANZAR(libros, lib)   
+                        FIN_MIENTRAS
+                SINO
+                    MIENTRAS (lib <> "&") HACER
+                        AVANZAR(libros, lib)
+                    FIN_MIENTRAS
+                FIN_SI
+                AVANZAR(Libros, lib)
+            FIN_MIENTRAS
+
+            MIENTRAS (lib <> "#") HACER
+                MIENTRAS (lib = " ") HACER
+                    AVANZAR(Libros, Lib)
+                FIN_MIENTRAS
+                cpal:= cpal + 1
+                MIENTRAS (lib <> "") y (lib <> "#") HACER
+                    AVANZAR(libros, lib)
+                FIN_MIENTRAS    
+            FIN_MIENTRAS
+            AVANZAR(libros, lib) //avanza el @
+            
+
+            ESCRIBIR("promedio de palabras en los resumenes es de:", cpal/clib)
+            SI (clib > mayor) ENTONCES
+                mayor:= clib
+                pl:=ed
+                AVANZAR(editoriales, ed)
+                p2:=ed
+            SINO
+                AVANZAR(editoriales, ed)
+            FIN_SI
+            AVANZAR(editoriales, ed)
+        FIN_MIENTRAS
+        ESCRIBIR("la mayor cantidad de libros es: ", mayor, "y la provincia es:",p1,p2)
+        CERRAR(editoriales); CERRAR(libros); CERRAR(Literatura)
 FIN_ACCION
