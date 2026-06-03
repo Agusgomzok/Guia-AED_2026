@@ -1,0 +1,145 @@
+ACCION parcialB_2024 ES
+    Ambiente
+        sec1,sal: secuencia de caracter;sec2: secuencia de entero
+        v1:caracter;v2:entero
+        
+        tipo_hab, doble: entero
+        c,d,u,i:entero
+        promedio: real
+
+        cant_reserva:entero
+
+        cant_dobles_hotel: entero
+        FUNCION ConNum(n:caracter):entero ES
+            SEGUN n HACER
+                "0":ConNum:= 0
+                "1":ConNum:= 1
+                "2":ConNum:= 2
+                "3":ConNum:= 3
+                "4":ConNum:= 4
+                "5":ConNum:= 5
+                "6":ConNum:= 6
+                "7":ConNum:= 7
+                "8":ConNum:= 8
+                "9":ConNum:= 9
+            FIN_SEGUN
+        FIN_FUNCION
+
+        FUNCION ConCarac(n:entero):caracter ES
+            SEGUN n HACER
+                0 :ConNum:= "0"
+                1 :ConNum:= "1"
+                2 :ConNum:= "2"
+                3 :ConNum:= "3"
+                4 :ConNum:= "4"
+                5 :ConNum:= "5"
+                6 :ConNum:= "6"
+                7 :ConNum:= "7"
+                8 :ConNum:= "8"
+                9 :ConNum:= "9"
+            FIN_SEGUN
+        FIN_FUNCION
+    Proceso
+        ARRANCAR(sec1), ARRANCAR(sec2); CREAR(sal)
+        AVANZAR(sec1, v1);AVANZAR(sec2, v2)
+        
+        total_Hoteles:=0
+
+        MIENTRAS NFDS(sec1) HACER
+            
+            total_hoteles := total_hoteles + 1
+            cant_dobles_hotel := 0
+
+            MIENTRAS (v1 <> "&") HACER
+                ESCRIBIR(sal, v1)
+                AVANZAR(sec1, v1)
+            FIN_MIENTRAS
+
+            AVANZAR(sec1, v1) // me comi al &
+            ESCRIBIR(sal, "&")// marca de fin digamos del nombre del hotel
+
+            c:=ConNum(v1);AVANZAR(sec1, v1);
+            d:=ConNum(v1);AVANZAR(sec1, v1);
+            u:=ConNum(v1);AVANZAR(sec1, v1);
+
+            cant_reserva:= (c * 100) + (d * 10) + u
+
+            PARA i := 1 HASTA cant_reserva HACER
+                AVANZAR(sec2, v2)
+                tipo_hab:=v2
+
+                SI (tipo_hab = 2) ENTONCES
+                    cant_dobles_hotel:= cant_dobles_hotel + 1
+                FIN_SI
+                AVANZAR(sec2, v2)
+            FIN_PARA
+
+            cant_noches:= v2
+            
+            SI (cant_dobles_hotel > 0) ENTONCES
+                
+            FIN_SI
+
+
+        FIN_MIENTRAS
+
+
+
+
+FIN_ACCION
+
+/*PARA i := 1 HASTA cant_reserva HACER
+                nro_reserva := v2      // 1° elemento del bloque [cite: 13, 23]
+                AVANZAR(sec2, v2)
+                
+                tipo_hab := v2         // 2° elemento del bloque 
+                SI (tipo_hab = 2) ENTONCES
+                    cant_dobles_hotel := cant_dobles_hotel + 1
+                FIN_SI
+                AVANZAR(sec2, v2)
+                
+                cant_noches := v2      // 3° elemento del bloque [cite: 13, 23]
+                AVANZAR(sec2, v2)
+                
+                importe := v2          // 4° elemento del bloque [cite: 13, 23]
+                AVANZAR(sec2, v2)      // Deja v2 sincronizado en el Nro de Reserva del próximo bloque 
+            FIN_PARA
+
+            // 4. Grabar la cantidad de dobles en la secuencia de caracteres (sal)
+            // Lógica formal de descomposición matemática para números de hasta 3 dígitos
+            SI (cant_dobles_hotel = 0) ENTONCES
+                ESCRIBIR(sal, "0")
+            SINO
+                // Invertimos temporalmente el número para grabarlo de izquierda a derecha sin usar arreglos
+                aux_dobles := 0
+                MIENTRAS (cant_dobles_hotel > 0) HACER
+                    aux_dobles := (aux_dobles * 10) + (cant_dobles_hotel MOD 10)
+                    cant_dobles_hotel := cant_dobles_hotel DIV 10
+                FIN_MIENTRAS
+
+                // Escribimos dígito por dígito transformado a carácter
+                MIENTRAS (aux_dobles > 0) HACER
+                    digito := aux_dobles MOD 10
+                    ESCRIBIR(sal, ConCarac(digito))
+                    aux_dobles := aux_dobles DIV 10
+                FIN_MIENTRAS
+            FIN_SI
+
+            // Un espacio o separador opcional antes de la llegada del próximo hotel en la salida
+            ESCRIBIR(sal, " ")
+
+            // Acumulamos las habitaciones dobles totales de la cadena para el informe final
+            total_dobles_cadena := total_dobles_cadena + cant_dobles_hotel
+
+        FIN_MIENTRAS
+
+        // 5. Cálculo y emisión del informe por pantalla (Promedio General)
+        SI (total_hoteles > 0) ENTONCES
+            promedio := total_dobles_cadena / total_hoteles
+            ESCRIBIR("Promedio de reservas de habitaciones dobles por hotel: ", promedio)
+        SINO
+            ESCRIBIR("No se procesaron registros de hoteles.")
+        FIN_SI
+
+        CERRAR(sec1); CERRAR(sec2); CERRAR(sal) [cite: 45]
+FIN_ACCION*/

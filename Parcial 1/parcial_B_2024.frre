@@ -20,7 +20,101 @@ Informe el porcentaje de ventas en efectivo sobre el total de tickets.
 */
 ACCION Nombre_Accion ES
     Ambiente
-        
+        sec1, sal: secuencia de caracter; 
+        sec2: secuencia de entero
+        v1:caracter; v2: entero
+
+        d,c,u, i, k,totalticket: entero
+
+        f_pago, nro_ticket, cant_art, importe: entero
+        porcentaje: real
+
+        FUNCION ConNum(n:caracter):entero ES
+            SEGUN n HACER
+                "0" :ConNum:= 0
+                "1" :ConNum:= 1
+                "2" :ConNum:= 2
+                "3" :ConNum:= 3
+                "4" :ConNum:= 4
+                "5" :ConNum:= 5
+                "6" :ConNum:= 6
+                "7" :ConNum:= 7
+                "8" :ConNum:= 8
+                "9" :ConNum:= 9 
+            FIN_SEGUN
+        FIN_FUNCION
+        FUNCION ConCarac(n: entero):caracter ES
+            SEGUN c HACER 
+                0: ConCarac:= "0" 
+                1: ConCarac:= "1" 
+                2: ConCarac:= "2" 
+                3: ConCarac:= "3" 
+                4: ConCarac:= "4" 
+                5: ConCarac:= "5" 
+                6: ConCarac:= "6" 
+                7: ConCarac:= "7" 
+                8: ConCarac:= "8" 
+                9: ConCarac:= "9" 
+            FIN_SEGUN
+        FIN_FUNCION
+
     Proceso
+        ARR(sec1); ARRANCAR(sec2); CREAR(sal)
+        AVZ(sec1, v1); AVZ(sec2, v2)
         
+        global_efectivo := 0
+        global_tickets := 0
+
+        MIENTRAS NFDS(sec1) HACER
+            MIENTRAS (v1 <> "&") HACER
+                ESCRIBIR(sal;v1)
+                AVANZAR(sec1, v1)
+            FIN_MIENTRAS
+            ESCRIBIR(sal, "&") //divido lo que me piden
+            AVANZAR(sec1, v1) //comi al & parado en el primercaracter de cantikcket
+
+            d=0;c:=0;u:=0
+            c:= ConNum(v1); AVZ(sec1, v1)
+            d:= ConNum(v1); AVZ(sec1, v1)
+            u:=ConNum(v1); AVZ(sec1, v1)
+
+            totalticket:= (c * 100) + (d * 10) + u
+
+            global_tickets := global_tickets + totalticket
+            
+            cont_efectivo_suc := 0
+
+            PARA k := 1 hasta totalticket HACER
+            f_pago:= v2
+            AVANZAR(sec2, v2)
+
+            AVANZAR(sec2, v2)
+            AVANZAR(sec2, v2)
+            AVANZAR(sec2, v2)
+            SI (f_pago = 1) ENTONCES
+                cont_efectivo_suc:= cont_efectivo_suc + 1
+                global_efectivo:= global_efectivo + 1
+            FIN_SI
+            FIN_PARA
+
+            c := cont_efectivo_suc DIV 100
+            d := (cont_efectivo_suc MOD 100) DIV 10
+            u := cont_efectivo_suc MOD 10
+
+            ESCRIBIR(sal,ConCarac(c))
+            ESCRIBIR(sal,ConCarac(d))
+            ESCRIBIR(sal,ConCarac(u))
+            
+            ESCRIBIR(sal, ",") //delimita sucursaul
+        
+        FIN_MIENTRAS
+
+        SI (global_tickets > 0) ENTONCES
+                    PORCENTAJE := (global_efectivo / global_tickets) * 100
+                    ESCRIBIR("El porcentaje de ventas en efectivo sobre el total es: ", PORCENTAJE, "%")
+                SINO
+                    ESCRIBIR("No se registraron tickets en el mes.")
+                FIN_SI
+
+                CERRAR(sec1); CERRAR(sec2); CERRAR(sal)
 FIN_ACCION
