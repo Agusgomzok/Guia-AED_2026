@@ -1,15 +1,39 @@
+/*Ejercicio N° 1 
+
+Una cadena de hoteles necesita un informe de ocupación y pagos para el mes de JUNIO. Para esto, se cuenta con dos secuencias de datos:
+
+Secuencia de caracteres:
+Estructura: Hotel (cantidad indeterminada de caracteres) & cantidad de reservas (3 caracteres) hotel & cantidad de reservas....FDS
+
+Ejemplo: HotelAlas&340HotelBahia&999… FDS
+
+Secuencia de enteros:
+Estructura: Para cada reserva: Nro de reserva, tipo de habitación (1: single, 2: doble, 3: suite), cantidad de noches, importe.
+
+Ejemplo: 1234 | 1 | 3 | 120.000 | 2345 | 3 | 2 | 65.000 |...FDS
+
+Nota: La función ConvertiraNumero(caracter) puede ser utilizada si se considera necesario para convertir un carácter a un dato entero.
+
+Se pide escribir un algoritmo que permita:
+Generar una secuencia de salida de caracteres que contenga el nombre de cada hotel y su cantidad de reservas de habitaciones dobles.
+Promedio de reservas de habitaciones dobles por hotel.
+
+*/
 ACCION parcialB_2024 ES
     Ambiente
         sec1,sal: secuencia de caracter;sec2: secuencia de entero
         v1:caracter;v2:entero
-        
-        tipo_hab, doble: entero
+        //var de reservas
+        tipo_hab: entero
+        //control  y conversion
         c,d,u,i:entero
+        cant_reserva:entero
+        //cotadores y promedios
+        cant_dobles_hotel: entero //local por hotel
+        total_dobles_cadena:entero //acumula todas las dobles
+        total_hoteles:  entero //cuenta los hoteles
         promedio: real
 
-        cant_reserva:entero
-
-        cant_dobles_hotel: entero
         FUNCION ConNum(n:caracter):entero ES
             SEGUN n HACER
                 "0":ConNum:= 0
@@ -42,11 +66,10 @@ ACCION parcialB_2024 ES
     Proceso
         ARRANCAR(sec1), ARRANCAR(sec2); CREAR(sal)
         AVANZAR(sec1, v1);AVANZAR(sec2, v2)
-        
+        total_dobles_cadena:=0 
         total_Hoteles:=0
 
         MIENTRAS NFDS(sec1) HACER
-            
             total_hoteles := total_hoteles + 1
             cant_dobles_hotel := 0
 
@@ -55,7 +78,7 @@ ACCION parcialB_2024 ES
                 AVANZAR(sec1, v1)
             FIN_MIENTRAS
 
-            AVANZAR(sec1, v1) // me comi al &
+            AVANZAR(sec1, v1) // me comi al & parado en el caracter de reserva
             ESCRIBIR(sal, "&")// marca de fin digamos del nombre del hotel
 
             c:=ConNum(v1);AVANZAR(sec1, v1);
@@ -66,80 +89,25 @@ ACCION parcialB_2024 ES
 
             PARA i := 1 HASTA cant_reserva HACER
                 AVANZAR(sec2, v2)
-                tipo_hab:=v2
-
+                tipo_hab:= v2 //tipo habitacion
                 SI (tipo_hab = 2) ENTONCES
                     cant_dobles_hotel:= cant_dobles_hotel + 1
                 FIN_SI
-                AVANZAR(sec2, v2)
+                AVANZAR(sec2, v2) //cant noches
+                AVANZAR(sec2, v2)//cash
+                AVANZAR(sec2, v2)//parado en el siguiente nro de reserva
             FIN_PARA
+//-------------------------------------------------------------------------
+            ESCRIBIR(sal, ConCarac(cant_dobles_hotel))// punto a compley
 
-            cant_noches:= v2
-            
-            SI (cant_dobles_hotel > 0) ENTONCES
-                
-            FIN_SI
-
-
+            total_dobles_cadena:= total_dobles_cadena + cant_dobles_hotel 
         FIN_MIENTRAS
 
-
-
-
-FIN_ACCION
-
-/*PARA i := 1 HASTA cant_reserva HACER
-                nro_reserva := v2      // 1° elemento del bloque [cite: 13, 23]
-                AVANZAR(sec2, v2)
-                
-                tipo_hab := v2         // 2° elemento del bloque 
-                SI (tipo_hab = 2) ENTONCES
-                    cant_dobles_hotel := cant_dobles_hotel + 1
-                FIN_SI
-                AVANZAR(sec2, v2)
-                
-                cant_noches := v2      // 3° elemento del bloque [cite: 13, 23]
-                AVANZAR(sec2, v2)
-                
-                importe := v2          // 4° elemento del bloque [cite: 13, 23]
-                AVANZAR(sec2, v2)      // Deja v2 sincronizado en el Nro de Reserva del próximo bloque 
-            FIN_PARA
-
-            // 4. Grabar la cantidad de dobles en la secuencia de caracteres (sal)
-            // Lógica formal de descomposición matemática para números de hasta 3 dígitos
-            SI (cant_dobles_hotel = 0) ENTONCES
-                ESCRIBIR(sal, "0")
-            SINO
-                // Invertimos temporalmente el número para grabarlo de izquierda a derecha sin usar arreglos
-                aux_dobles := 0
-                MIENTRAS (cant_dobles_hotel > 0) HACER
-                    aux_dobles := (aux_dobles * 10) + (cant_dobles_hotel MOD 10)
-                    cant_dobles_hotel := cant_dobles_hotel DIV 10
-                FIN_MIENTRAS
-
-                // Escribimos dígito por dígito transformado a carácter
-                MIENTRAS (aux_dobles > 0) HACER
-                    digito := aux_dobles MOD 10
-                    ESCRIBIR(sal, ConCarac(digito))
-                    aux_dobles := aux_dobles DIV 10
-                FIN_MIENTRAS
-            FIN_SI
-
-            // Un espacio o separador opcional antes de la llegada del próximo hotel en la salida
-            ESCRIBIR(sal, " ")
-
-            // Acumulamos las habitaciones dobles totales de la cadena para el informe final
-            total_dobles_cadena := total_dobles_cadena + cant_dobles_hotel
-
-        FIN_MIENTRAS
-
-        // 5. Cálculo y emisión del informe por pantalla (Promedio General)
-        SI (total_hoteles > 0) ENTONCES
-            promedio := total_dobles_cadena / total_hoteles
-            ESCRIBIR("Promedio de reservas de habitaciones dobles por hotel: ", promedio)
+        SI (total_hoteles > 0 ) ENTONCES
+            promedio:= total_dobles_cadena / total_hoteles
         SINO
-            ESCRIBIR("No se procesaron registros de hoteles.")
-        FIN_SI
+            ESCRIBIR("no se procesaron datos de hoteles")
+        FIN_SI 
 
-        CERRAR(sec1); CERRAR(sec2); CERRAR(sal) [cite: 45]
-FIN_ACCION*/
+        CERRAR(sec1);CERRAR(sec2);CERRAR(sal)
+FIN_ACCION
