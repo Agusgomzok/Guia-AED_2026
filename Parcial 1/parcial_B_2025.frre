@@ -1,122 +1,122 @@
 ACCION Parcial1_2025B ES
-    Ambiente
-        ed, lib, sal: secuencia de caracter
-        ve, vl: caracter
+Ambiente
+ed, lib, sal: secuencia de caracter
+ve, vl: caracter
 
-        c, d, u, paginas, autoayuda, total_edit_autoayuda: entero
+c, d, u, paginas, autoayuda, total_edit_autoayuda: entero
 
-        tipo_lib: caracter
-        tiene_autoayuda: booleano
+tipo_lib: caracter
+tiene_autoayuda: booleano
 
-        cant_pal_res_total: entero
+cant_pal_res_total: entero
 
-        FUNCION ConNum(n: caracter): Entero ES
-            SEGUN n HACER
-                "0" : ConNum := 0
-                "1" : ConNum := 1
-                "2" : ConNum := 2
-                "3" : ConNum := 3
-                "4" : ConNum := 4
-                "5" : ConNum := 5
-                "6" : ConNum := 6
-                "7" : ConNum := 7 
-                "8" : ConNum := 8
-                "9" : ConNum := 9 
-            FIN_SEGUN
-        FIN_FUNCION
+FUNCION ConNum(n: caracter): Entero ES
+    SEGUN n HACER
+        "0" : ConNum := 0
+        "1" : ConNum := 1
+        "2" : ConNum := 2
+        "3" : ConNum := 3
+        "4" : ConNum := 4
+        "5" : ConNum := 5
+        "6" : ConNum := 6
+        "7" : ConNum := 7 
+        "8" : ConNum := 8
+        "9" : ConNum := 9 
+    FIN_SEGUN
+FIN_FUNCION
 
 Proceso
-    ARRANCAR(ed); ARRANCAR(lib); CREAR(sal)
-    AVANZAR(ed, ve); AVANZAR(lib, vl)
+ARRANCAR(ed); ARRANCAR(lib); CREAR(sal)
+AVANZAR(ed, ve); AVANZAR(lib, vl)
 
-    total_edit_autoayuda := 0 // CORREGIDO: Inicialización del contador global fuera de los ciclos
+total_edit_autoayuda := 0 // CORREGIDO: Inicialización del contador global fuera de los ciclos
 
-    MIENTRAS NFDS(ed) HACER
-        // Procesamos y saltamos el nombre de la editorial
-        MIENTRAS (ve <> "&") HACER
-            AVANZAR(ed, ve)
-        FIN_MIENTRAS
-        AVANZAR(ed, ve) // Parado en &
+MIENTRAS NFDS(ed) HACER
+// Procesamos y saltamos el nombre de la editorial
+MIENTRAS (ve <> "&") HACER
+    AVANZAR(ed, ve)
+FIN_MIENTRAS
+AVANZAR(ed, ve) // Parado en &
 
-        // Saltamos los 2 caracteres de la provincia de forma consecutiva
-        AVANZAR(ed, ve)
-        AVANZAR(ed, ve) // 've' queda perfectamente posicionada en el inicio de la siguiente editorial
+// Saltamos los 2 caracteres de la provincia de forma consecutiva
+AVANZAR(ed, ve)
+AVANZAR(ed, ve) // 've' queda perfectamente posicionada en el inicio de la siguiente editorial
 
-        // Inicialización de variables para la editorial actual
-        cant_pal_res_total := 0
-        tiene_autoayuda := Falso
+// Inicialización de variables para la editorial actual
+cant_pal_res_total := 0
+tiene_autoayuda := Falso
 
-        // Ciclo para procesar el bloque de libros de esta editorial
-        MIENTRAS NFDS(lib) y (vl <> "@") HACER
-            tipo_lib := vl
-            
-            // Leemos y descomponemos las páginas (3 caracteres fijos)
-            c := ConNum(vl); AVANZAR(lib, vl)
-            d := ConNum(vl); AVANZAR(lib, vl)
-            u := ConNum(vl); AVANZAR(lib, vl) // 'vl' queda en el primer carácter del nombre del libro
+// Ciclo para procesar el bloque de libros de esta editorial
+MIENTRAS NFDS(lib) y (vl <> "@") HACER
+    tipo_lib := vl
+    
+    // Leemos y descomponemos las páginas (3 caracteres fijos)
+    c := ConNum(vl); AVANZAR(lib, vl)
+    d := ConNum(vl); AVANZAR(lib, vl)
+    u := ConNum(vl); AVANZAR(lib, vl) // 'vl' queda en el primer carácter del nombre del libro
 
-            paginas := (c * 100) + (d * 10) + u
+    paginas := (c * 100) + (d * 10) + u
 
-            // Evaluamos el Punto C para la editorial actual
-            SI (tipo_lib = "A") ENTONCES
-                tiene_autoayuda := Verdadero
-            FIN_SI
+    // Evaluamos el Punto C para la editorial actual
+    SI (tipo_lib = "A") ENTONCES
+        tiene_autoayuda := Verdadero
+    FIN_SI
 
-            // CORREGIDO: Tratamiento unificado y seguro de nombres de libros (Punto A)
-            SI (tipo_lib = "I") y (paginas < 150) ENTONCES
-                // Copia controlada a la secuencia de salida
-                MIENTRAS (vl <> "&") HACER
-                    ESCRIBIR(sal, vl)
-                    AVANZAR(lib, vl)
-                FIN_MIENTRAS
-                ESCRIBIR(sal, " ") // Separador estético opcional en la cinta de salida
-            SINO
-                // CORREGIDO: Salteo universal para TODOS los libros que no cumplen (L, C, A e I>=150)
-                MIENTRAS (vl <> "&") HACER
-                    AVANZAR(lib, vl)
-                FIN_MIENTRAS
-            FIN_SI
-            
-            AVANZAR(lib, vl) // Consumimos el '&'. 'vl' queda en el primer carácter del resumen
-
-            // Tratamiento de texto libre del Resumen (Punto B)
-            // Eliminamos espacios iniciales si los hubiera antes de la primera palabra
-            MIENTRAS (vl = " ") HACER
-                AVANZAR(lib, vl)
-            FIN_MIENTRAS
-
-            MIENTRAS (vl <> "#") HACER
-                cant_pal_res_total := cant_pal_res_total + 1
-                
-                // Consumimos la palabra actual hasta un espacio o la marca de fin
-                MIENTRAS (vl <> " ") y (vl <> "#") HACER
-                    AVANZAR(lib, vl)
-                FIN_MIENTRAS
-                    
-                // Limpiamos los espacios intermedios de longitud variable
-                MIENTRAS (vl = " ") HACER
-                    AVANZAR(lib, vl)
-                FIN_MIENTRAS
-            FIN_MIENTRAS
-            
-            AVANZAR(lib, vl) // Consumimos el '#'. 'vl' queda en el próximo libro o en la marca '@'
-        FIN_MIENTRAS
-
-        // Al finalizar el bloque de libros de la editorial, si frenó en '@', lo consumimos
-        SI NFDS(lib) y (vl = "@") ENTONCES
+    // CORREGIDO: Tratamiento unificado y seguro de nombres de libros (Punto A)
+    SI (tipo_lib = "I") y (paginas < 150) ENTONCES
+        // Copia controlada a la secuencia de salida
+        MIENTRAS (vl <> "&") HACER
+            ESCRIBIR(sal, vl)
             AVANZAR(lib, vl)
-        FIN_SI
-        
-        // Informes correspondientes al nivel de la Editorial
-        ESCRIBIR("Para la editorial actual, el total de palabras en resúmenes es: ", cant_pal_res_total)
+        FIN_MIENTRAS
+        ESCRIBIR(sal, " ") // Separador estético opcional en la cinta de salida
+    SINO
+        // CORREGIDO: Salteo universal para TODOS los libros que no cumplen (L, C, A e I>=150)
+        MIENTRAS (vl <> "&") HACER
+            AVANZAR(lib, vl)
+        FIN_MIENTRAS
+    FIN_SI
+    
+    AVANZAR(lib, vl) // Consumimos el '&'. 'vl' queda en el primer carácter del resumen
 
-        SI tiene_autoayuda ENTONCES
-            total_edit_autoayuda := total_edit_autoayuda + 1
-        FIN_SI
+    // Tratamiento de texto libre del Resumen (Punto B)
+    // Eliminamos espacios iniciales si los hubiera antes de la primera palabra
+    MIENTRAS (vl = " ") HACER
+        AVANZAR(lib, vl)
     FIN_MIENTRAS
 
-    // Informe global final
-    ESCRIBIR("Cantidad total de editoriales con al menos un libro de Autoayuda: ", total_edit_autoayuda)
+    MIENTRAS (vl <> "#") HACER
+        cant_pal_res_total := cant_pal_res_total + 1
+        
+        // Consumimos la palabra actual hasta un espacio o la marca de fin
+        MIENTRAS (vl <> " ") y (vl <> "#") HACER
+            AVANZAR(lib, vl)
+        FIN_MIENTRAS
+            
+        // Limpiamos los espacios intermedios de longitud variable
+        MIENTRAS (vl = " ") HACER
+            AVANZAR(lib, vl)
+        FIN_MIENTRAS
+    FIN_MIENTRAS
+    
+    AVANZAR(lib, vl) // Consumimos el '#'. 'vl' queda en el próximo libro o en la marca '@'
+FIN_MIENTRAS
 
-    CERRAR(ed); CERRAR(lib); CERRAR(sal)
+// Al finalizar el bloque de libros de la editorial, si frenó en '@', lo consumimos
+SI NFDS(lib) y (vl = "@") ENTONCES
+    AVANZAR(lib, vl)
+FIN_SI
+
+// Informes correspondientes al nivel de la Editorial
+ESCRIBIR("Para la editorial actual, el total de palabras en resúmenes es: ", cant_pal_res_total)
+
+SI tiene_autoayuda ENTONCES
+    total_edit_autoayuda := total_edit_autoayuda + 1
+FIN_SI
+FIN_MIENTRAS
+
+// Informe global final
+ESCRIBIR("Cantidad total de editoriales con al menos un libro de Autoayuda: ", total_edit_autoayuda)
+
+CERRAR(ed); CERRAR(lib); CERRAR(sal)
 FIN_ACCION

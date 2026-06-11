@@ -1,6 +1,79 @@
+/*Ejercicio: Análisis de Funciones Cuadráticas
+Se requiere diseñar un algoritmo en pseudocódigo que permita analizar múltiples funciones cuadráticas de la forma $Y = aX^2 + bX + c$.
+El programa debe solicitar al usuario los coeficientes $a$, $b$ y $c$ por cada función. El ingreso de funciones debe estar condicionado a la respuesta del usuario frente a la pregunta "¿Desea analizar otra función? (S/N)".Para cada función ingresada, el algoritmo debe evaluar la variable independiente $X$ en el intervalo cerrado [20, -20], variando con decrementos de 2 (es decir, $X$ tomará los valores 20, 18, 16... hasta llegar a -20).Para cada coordenada $(X, Y)$ generada, se solicita:Verificar si $Y$ es múltiplo de 11: Desarrollar e invocar una función que reciba el valor de $Y$ y retorne un valor lógico (Verdadero o Falso). Para determinar si es múltiplo de 11, se debe utilizar la regla práctica: la suma de los dígitos en posiciones impares de su valor absoluto debe ser igual a la suma de los dígitos en posiciones pares.Mostrar la coordenada: Desarrollar e invocar un procedimiento que reciba como parámetros la coordenada actual $(X, Y)$ y el resultado de la función anterior, e imprima por pantalla un mensaje indicando el punto evaluado y si $Y$ es o no múltiplo de 11.Finalmente, una vez terminada de evaluar cada función completa (es decir, al terminar el intervalo de $X$), el programa principal debe informar por pantalla:La cantidad total de valores $Y$ que resultaron ser múltiplos de 11.La cantidad total de valores $Y$ que NO resultaron ser múltiplos de 11.*/
 ACCION Nombre_Accion ES
     Ambiente
-        
+        a,b,c, X, Y, cant_mult_11, cant_no_mult_11: entero
+        resp: ("S", "N")
+        es_mult: logico
+
+        FUNCION VerificarMultiplo11(num:entero): logico ES
+            Ambiente
+                suma_par, suma_imprar, digito, pos: entero
+            Proceso
+                num:= abs(num)
+                suma_par:= 0
+                suma_impar:= 0
+                pos:= 1
+
+                MIENTRAS (num > 0 ) HACER
+                    digito:= num mod 10
+                    SI (pos mod 2 = 0) ENTONCES
+                        suma_par:= suma_par + digito
+                    SINO
+                        suma_imprar:= suma_imprar + digito
+                    FIN_SI
+                    num:= num div 10
+                    pos:= pos + 1 
+                FIN_MIENTRAS
+
+                SI (suma_par = suma_imprar) ENTONCES
+                    VerificarMultiplo11:= verdadero
+                SINO
+                    VerificarMultiplo11:= falso
+                FIN_SI
+        FIN_FUNCION
+
+        PROCEDIMIENTO MostrarCoords(vX, vY: entero, ves_mult:logico) ES
+            Ambiente
+            Proceso
+                ESCRIBIR("Coordenada: (", vX, " , ", vY, ")")
+                SI (ves_mult = verdadero) ENTONCES
+                    ESCRIBIR("el valor de Y es multiplo de 11")
+                SINO
+                    ESCRIBIR("el valor de Y NO es multiplo de 11")
+                FIN_SI
+        FIN_PROCEDIMIENTO
     Proceso
-        
+        ESCRIBIR("¿Desea ingresar una función a analizar? (S/N):")
+        LEER("resp")
+
+        MIENTRAS (resp = "S") HACER
+            ESCRIBIR("ingrese los coeficientes de a, b y c:")
+            LEER(a , b, c)
+            
+            cant_mult_11:=0
+            cant_no_mult_11:=0
+
+            PARA  x := 20 HASTA -20 , -2 HACER
+                Y:= (a**X) + (b * X) + c
+
+                es_mult:=VerificarMultiplo11(Y)
+
+                MostrarCoords(X, Y, es_mult)
+
+                SI (es_mult = verdadero) ENTONCES
+                    cant_mult_11:= cant_mult_11 + 1
+                SINO
+                    cant_no_mult_11:= cant_no_mult_11 + 1
+                    
+                FIN_SI
+            FIN_PARA
+
+            Escribir("Cantidad total de Y múltiplos de 11: ", cant_mult_11)
+            Escribir("Cantidad total de Y NO múltiplos de 11: ", cant_no_mult_11)
+            ESCRIBIR ("desea analizar otra funcion (S,N):")
+            Leer(resp)
+        FIN_MIENTRAS
+
 FIN_ACCION

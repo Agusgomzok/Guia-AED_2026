@@ -114,6 +114,5 @@ ACCION Parcial1_2025A ES
             FIN_SI
             AVANZAR(editoriales, ed)
         FIN_MIENTRAS
-        ESCRIBIR("la mayor cantidad de libros es: ", mayor, "y la provincia es:",p1,p2)
-        CERRAR(editoriales); CERRAR(libros); CERRAR(Literatura)
-FIN_ACCION
+ESCRIBIR("la mayor cantidad de libros es: ", mayor, "y la provincia es:",p1,p2)
+CERRAR(editoriales); CERRAR(libros); CERRAR(Literatura)
