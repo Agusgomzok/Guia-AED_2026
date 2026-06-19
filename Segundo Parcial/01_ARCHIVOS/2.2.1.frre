@@ -1,0 +1,31 @@
+/*Se dispone de una secuencia con los datos de los alumnos de la facultad:
+
+Apellido y Nombre
+Carrera (ISI - IEM - IQ)
+Nº de Legajo
+Fecha de Nacimiento
+Fecha de Ingreso
+D.N.I.
+Sexo (M o F)
+Fecha de último examen aprobado
+Nota
+Se desea un listado de los mismos, con el siguiente formato:
+
+Nro_LegajoApellido_NombreDocumentoCarrera*/
+ACCION 2.2.1 ES
+    Ambiente
+        alumno = Registro
+            carrera: ("isi", "iem", "iq");
+            nlegajo:N(5)
+            fechanacimiento : fecha
+            
+        Fin_Registro
+
+        fecha = Registro
+            año:N(4)
+            mes:1..12
+            dia:1..31
+        Fin_Registro
+    Proceso
+        
+FIN_ACCION

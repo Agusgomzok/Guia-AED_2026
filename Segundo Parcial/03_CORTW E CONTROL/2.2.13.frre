@@ -1,0 +1,27 @@
+/*Un Casino de la región ha notado un incremento en los costos de las reparaciones de tragamonedas en sus sucursales. Por ello solicitó un informe con la cantidad de reparaciones y sus costos, discriminados según tragamonedas, modelo, marca, sucursal y total general.
+
+Se dispone de un archivo REPARACIONES, con el siguiente formato. Cada registro representa la reparación de un tragamonedas, tener en cuenta que puede existir más de una reparación por tragamonedas.
+
+REPARACIONES Ordenado por Cod_Sucursal, Marca, Modelo, Cod_Tragamonedas
+
+Cod_SucursalMarcaModeloCod_Tragamonedas|Fecha_ReparacionCosto_Reparacion*/
+
+
+ACCION repaciones ES
+    Ambiente
+        fecha = Registro
+            año:N(4)
+            mes:1..12
+            dia:.1..31
+        Fin_Registro
+        
+        reparaciones = Registro
+            ..
+            
+        Fin_Registro
+
+        rep:
+        
+    Proceso
+        
+FIN_ACCION
