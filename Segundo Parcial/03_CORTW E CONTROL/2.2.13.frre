@@ -4,24 +4,145 @@ Se dispone de un archivo REPARACIONES, con el siguiente formato. Cada registro r
 
 REPARACIONES Ordenado por Cod_Sucursal, Marca, Modelo, Cod_Tragamonedas
 
-Cod_SucursalMarcaModeloCod_Tragamonedas|Fecha_ReparacionCosto_Reparacion*/
+Cod_SucursalMarcaModeloCod_TragamonedasFecha_ReparacionCosto_Reparacion
+Realice el algoritmo para emitir el informe con los totales solicitados*/
 
-
-ACCION repaciones ES
+ACCION tragamonedas ES
     Ambiente
-        fecha = Registro
-            año:N(4)
-            mes:1..12
-            dia:.1..31
-        Fin_Registro
-        
-        reparaciones = Registro
-            ..
-            
+        fecha = registro
+            aa:entero
+            mm:1..12
+            dd:1..31
         Fin_Registro
 
-        rep:
+        reg_reparacion = registro
+            cod_sucursal:alfanumerico(20)
+            marca:alfanumerico(20)
+            modelo:alfanumerico(20)
+            Cod_tragamonedas:entero
+            fecha_reparacion:fecha
+            costo_reparacion:real
+        Fin_Registro
         
+        arch_rep:ARCHIVO DE reg_reparacion
+        reg:reg_reparacion
+        
+
+    tot_gen_rep   : Entero
+        tot_gen_costo : Real
+
+        // 2. Totales por Sucursal
+        tot_suc_rep   : Entero
+        tot_suc_costo : Real
+
+        // 3. Totales por Marca
+        tot_mar_rep   : Entero
+        tot_mar_costo : Real
+
+        // 4. Totales por Modelo
+        tot_mod_rep   : Entero
+        tot_mod_costo : Real
+
+        // 5. Totales por Tragamonedas
+        tot_tra_rep   : Entero
+        tot_tra_costo : Real
+
     Proceso
+        ABRIR(arch_rep)
+        LEER(arch_rep, reg)
+
+        // Inicializar Totales Generales
+        tot_gen_rep   := 0
+        tot_gen_costo := 0
+
+        ESCRIBIR("=== INFORME DE REPARACIONES Y COSTOS - CASINO ===")
+
+        // CICLO PRINCIPAL: Recorrer todo el archivo
+        MIENTRAS NO FIN_ARCHIVO(arch_rep) HACER
+            
+            // Salvar clave del Primer Nivel: SUCURSAL
+            aux_sucursal := reg.Cod_Sucursal
+            tot_suc_rep   := 0
+            tot_suc_costo := 0
+            ESCRIBIR("--------------------------------------------------")
+            ESCRIBIR("SUCURSAL: ", aux_sucursal)
+
+            // CICLO SEGUNDO NIVEL: Mientras estemos en la misma Sucursal
+            MIENTRAS (NO FIN_ARCHIVO(arch_rep)) Y (reg.Cod_Sucursal = aux_sucursal) HACER
+                
+                // Salvar clave del Tercer Nivel: MARCA
+                aux_marca := reg.Marca
+                tot_mar_rep   := 0
+                tot_mar_costo := 0
+                ESCRIBIR("  MARCA: ", aux_marca)
+
+                // CICLO TERCER NIVEL: Mientras estemos en la misma Marca y Sucursal
+                MIENTRAS (NO FIN_ARCHIVO(arch_rep)) Y (reg.Cod_Sucursal = aux_sucursal) Y (reg.Marca = aux_marca) HACER
+                    
+                    // Salvar clave del Cuarto Nivel: MODELO
+                    aux_modelo := reg.Modelo
+                    tot_mod_rep   := 0
+                    tot_mod_costo := 0
+                    ESCRIBIR("    MODELO: ", aux_modelo)
+
+                    // CICLO CUARTO NIVEL: Misma Sucursal, Marca y Modelo
+                    MIENTRAS (NO FIN_ARCHIVO(arch_rep)) Y (reg.Cod_Sucursal = aux_sucursal) Y (reg.Marca = aux_marca) Y (reg.Modelo = aux_modelo) HACER
+                        
+                        // Salvar clave del Quinto Nivel: TRAGAMONEDAS
+                        aux_traga := reg.Cod_Tragamonedas
+                        tot_tra_rep   := 0
+                        tot_tra_costo := 0
+
+                        // CICLO QUINTO NIVEL: Mismo Tragamonedas específico (Procesamiento de registros individuales)
+                        MIENTRAS (NO FIN_ARCHIVO(arch_rep)) Y (reg.Cod_Sucursal = aux_sucursal) Y (reg.Marca = aux_marca) Y (reg.Modelo = aux_modelo) Y (reg.Cod_Tragamonedas = aux_traga) HACER
+                            
+                            // Acumular la reparación individual en el nivel del Tragamonedas
+                            tot_tra_rep   := tot_tra_rep + 1
+                            tot_tra_costo := tot_tra_costo + reg.Costo_Reparacion
+
+                            // Avanzar al siguiente registro
+                            LEER(arch_rep, reg)
+                        FIN_MIENTRAS
+
+                        // --- CIERRE DE CORTE: TRAGAMONEDAS ---
+                        ESCRIBIR("      Tragamonedas ID: ", aux_traga, " -> Cant. Rep: ", tot_tra_rep, " | Costo: $", tot_tra_costo)
+                        
+                        // Subir totales al nivel inmediato superior (Modelo)
+                        tot_mod_rep   := tot_mod_rep + tot_tra_rep
+                        tot_mod_costo := tot_mod_costo + tot_tra_costo
+                    FIN_MIENTRAS
+
+                    // --- CIERRE DE CORTE: MODELO ---
+                    ESCRIBIR("    TOTAL MODELO ", aux_modelo, " -> Cant. Rep: ", tot_mod_rep, " | Costo Total: $", tot_mod_costo)
+                    
+                    // Subir totales al nivel inmediato superior (Marca)
+                    tot_mar_rep   := tot_mar_rep + tot_mod_rep
+                    tot_mar_costo := tot_mar_costo + tot_mod_costo
+                FIN_MIENTRAS
+
+                // --- CIERRE DE CORTE: MARCA ---
+                ESCRIBIR("  TOTAL MARCA ", aux_marca, " -> Cant. Rep: ", tot_mar_rep, " | Costo Total: $", tot_mar_costo)
+                
+                // Subir totales al nivel inmediato superior (Sucursal)
+                tot_suc_rep   := tot_suc_rep + tot_mar_rep
+                tot_suc_costo := tot_suc_costo + tot_mar_costo
+            FIN_MIENTRAS
+
+            // --- CIERRE DE CORTE: SUCURSAL ---
+            ESCRIBIR("TOTAL SUCURSAL ", aux_sucursal, " -> Cant. Rep: ", tot_suc_rep, " | Costo Total: $", tot_suc_costo)
+            
+            // Subir totales al Nivel General
+            tot_gen_rep   := tot_gen_rep + tot_suc_rep
+            tot_gen_costo := tot_gen_costo + tot_suc_costo
+        FIN_MIENTRAS
+
+        // --- CIERRE DEL ARCHIVO: TOTAL GENERAL ---
+        ESCRIBIR("==================================================")
+        ESCRIBIR("TOTAL GENERAL CASINO -> Cant. Rep. Globales: ", tot_gen_rep, " | Costo Global: $", tot_gen_costo)
+        ESCRIBIR("==================================================")
+
+        CERRAR(arch_rep)
+FIN_ACCION
+
         
 FIN_ACCION

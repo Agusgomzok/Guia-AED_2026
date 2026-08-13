@@ -1,0 +1,12 @@
+ACCION Farmacia ES
+    Ambiente
+        reg_maestro = Registro
+            farmacia:
+            medicamento:
+            cant_actual:
+            fecha_vencimiento:
+        Fin_Registro
+        
+    Proceso
+        
+FIN_ACCION

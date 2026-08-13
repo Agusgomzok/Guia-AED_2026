@@ -1,0 +1,91 @@
+/*Los alumnos que desarrollaban el proyecto UTNBook (ejercicio 2.23) han decidido modificar parte de la aplicación para que esta tenga mayor interacción con el usuario. Es así que decidieron eliminar el archivo de Notificaciones, provocando así que la inserción nuevos amigos, la eliminación de amistades y la escritura en los muros de otras personas esté a cargo del usuario.
+
+Con estas consideraciones trabajaron con el siguiente archivo:
+
+AMIGOS Indexado por Cod_Usuario y Cod_Amigo
+
+Cod_UsuarioCod_AmigoFecha_AmistadMensaje_Muro
+El proceso para agregar o eliminar amigos y escribir en los muros de estos es ahora el siguiente:
+El usuario, al iniciar la sesión, ingresa su Código de Usuario y el Código del amigo. Luego, puede seleccionar tres opciones distintas: Agregar Amigo; Eliminar Amigo y Escribir en el Muro.
+
+Si selecciona Agregar Amigo se realizan las acciones necesarias para incorporar esta nueva amistad al usuario, y en caso de no poder realizarse, se muestra un mensaje por pantalla explicando el motivo que imposibilita la amistad. (por ej. Cod_Usuario inexistente, Amistad entre Usuario y Amigo ya existente, etc.). En cambio, si selecciona Eliminar Amigo el algoritmo deberá eliminar la amistad en caso de existir, en caso contrario informar el error por pantalla.
+
+Por último, al seleccionar Escribir en el Muro el usuario debe ingresar el mensaje que desea escribir a su amigo y luego el algoritmo deberá registrar este mensaje. De ser necesario informar algún error que pueda ocurrir (por ej. Amistad entre el Usuario y Amigo inexistente, etc).
+
+*/
+ACCION 2.3.8 ES
+
+
+
+    Proceso
+    ABRIR E/(amigos);
+
+FIN_ACCION
+ACCION UTNBook_Interactivo ES
+    AMBIENTE
+        Reg_Amigo = REGISTRO
+            Cod_Usuario: N(8)
+            Cod_Amigo: N(8)
+            Fecha_Amistad: Fecha
+            Mensaje_Muro: AN(255)
+        FIN_REGISTRO
+
+        Arch_Amigos: Archivo de Reg_Amigo indexado por Cod_Usuario + Cod_Amigo
+        Reg: Reg_Amigo
+
+        u_ingresado, a_ingresado: N(8)
+        opcion: 1..3
+        msg_ingresado: AN(255)
+        existe: BOLEANO
+
+    PROCESO
+        ABRIR E/S (Arch_Amigos)
+
+        ESCRIBIR("Ingrese su Código de Usuario:")
+        LEER(u_ingresado)
+        ESCRIBIR("Ingrese el Código de su Amigo:")
+        LEER(a_ingresado)
+
+        ESCRIBIR("Seleccione Opción: 1-Agregar Amigo | 2-Eliminar Amigo | 3-Escribir Muro")
+        LEER(opcion)
+
+        // Búsqueda del registro por clave compuesta
+        Reg.Cod_Usuario := u_ingresado
+        Reg.Cod_Amigo := a_ingresado
+        LEER(Arch_Amigos, Reg, existe)
+
+        SEGUN opcion HACER
+            1: // AGREGAR AMIGO
+                SI existe ENTONCES
+                    ESCRIBIR("Error: La amistad entre el usuario y el amigo ya existe.")
+                SINO
+                    Reg.Cod_Usuario := u_ingresado
+                    Reg.Cod_Amigo := a_ingresado
+                    Reg.Fecha_Amistad := FECHA_ACTUAL()
+                    Reg.Mensaje_Muro := ""
+                    ESCRIBIR(Arch_Amigos, Reg)
+                    ESCRIBIR("Amistad agregada exitosamente.")
+                FIN_SI
+
+            2: // ELIMINAR AMIGO
+                SI NO existe ENTONCES
+                    ESCRIBIR("Error: La amistad entre el usuario y el amigo no existe.")
+                SINO
+                    BORRAR(Arch_Amigos, Reg)
+                    ESCRIBIR("Amistad eliminada exitosamente.")
+                FIN_SI
+
+            3: // ESCRIBIR EN EL MURO
+                SI NO existe ENTONCES
+                    ESCRIBIR("Error: No se puede escribir en el muro. La amistad es inexistente.")
+                SINO
+                    ESCRIBIR("Ingrese el mensaje para el muro:")
+                    LEER(msg_ingresado)
+                    Reg.Mensaje_Muro := msg_ingresado
+                    REESCRIBIR(Arch_Amigos, Reg)
+                    ESCRIBIR("Mensaje registrado en el muro con éxito.")
+                FIN_SI
+        FIN_SEGUN
+
+        CERRAR(Arch_Amigos)
+FIN_ACCION

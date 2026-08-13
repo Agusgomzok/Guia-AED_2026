@@ -1,0 +1,112 @@
+La misma cadena de supermercados, ademas cuenta con un archivo secuencial con el stock de todos sus articulos con el siguiente formato:
+
+Stock, ordenado por Codigo Sucursal, Rubro y Codigo Articulo.
+	CodSuc N(2)	|	Rubro AN(20) 	  |	codArticulo N(5)	| 	FechaUltRep	|	Stock de Seguridad	|	Stock actual
+
+FechaUltRep: fecha ultima reposicion
+El stock de seguridad es el nivel minimo de existencias que se debe mantener en almacen.
+
+Se le pide: escribir un algoritmo en pseudocodigo que permita:
+1. Generar un informe que muestre todos los articulos (sucursal, rubro y codigo de articulo) cuyo stock actual este por debajo del stock de seguridad, indicando cantidad total por sucursal, por rubro y total general.
+2. Generar un archivo de salida que contenga la cantidad total de articulos que requieren reposicion (stock actual, menor a stock de seguridad) por Rubro, por cada sucursal. Debe contener: codigo sucursal, rubro y cantidad de articulos.	
+
+ACCION parcial2023 ES
+    Ambiente
+        Fecha = Registro
+            aa: N(4)
+            mm: N(2)
+            dd: N(2)
+        Fin_Registro
+
+        Stock = Registro
+            codSuc: N(2)
+            rubro: AN(20)
+            codArticulo: N(5)
+            fechaUltRep: Fecha
+            stockSeguridad: N(2)
+            stockActual: N(2)
+        Fin_Registro
+
+        Salida = Registro
+            codSuc: N(2)
+            rubro: AN(20)
+            cantArticulos: N(5)
+        Fin_Registro
+
+        archStock: archivo de Stock Ordenado por codSuc, rubro y codArticulo
+        regStock: Stock
+
+        archSalida: archivo de Salida 
+        regSalida: Salida
+
+        resSuc: N(2)
+        resRubro: AN(20)
+
+
+
+        PROCEDIMIENTO corteRubro() ES
+            Proceso
+                ESCRIBIR("Rubro: ", resRubro, " Total: ", totXRubro)
+                totXSucursal := totXSucursal + totXRubro
+                
+
+                totXRubro:= 0
+                resRubro := regStock.rubro
+
+
+        FIN_PROCEDIMIENTO
+
+
+
+        PROCEDIMIENTO corteSucursal() ES
+            Proceso
+                corteRubro()
+                ESCRIBIR("Sucursal: ", resSuc, " Total: ", totXSucursal)
+                totalGral := totalGral + totXSucursal
+                totXSucursal := 0
+                resSuc := regStock.codSuc
+        FIN_PROCEDIMIENTO
+
+
+
+
+        PROCEDIMIENTO tratarRegistro() ES
+            Proceso
+                SI (regStock.stockActual < regStock.stockSeguridad) ENTONCES
+                    totXRubro := totXRubro + 1
+                    ESCRIBIR(sucursal, regStock.codSuc)
+                    ESCRIBIR(rubro, regStock.rubro)
+                    ESCRIBIR("Articulo: ", regStock.codArticulo)
+                FIN_SI
+        FIN_PROCEDIMIENTO
+
+
+
+        PROCEDIMIENTO tratarCorte() ES
+            Proceso
+                SI (resSuc <> regStock.codSuc) ENTONCES
+                    corteSucursal()
+                SINO
+                    SI (resRubro <> regStock.rubro) ENTONCES
+                        corteRubro()
+                    FIN_SI
+                FIN_SI
+        FIN_PROCEDIMIENTO
+        
+
+    Proceso
+        ABRIR E/(archStock); LEER(archStock, regStock)
+        ABRIR /S(archSalida)
+
+        resSuc := regStock.Suc; resRubro := regStock.rubro
+        totalGral := 0; totXSucursal := 0; totXRubro := 0
+
+        MIENTRAS NFDA(archStock) HACER
+            tratarCorte()
+            tratarRegistro()
+            LEER(archStock, regStock)
+        FIN_MIENTRAS
+        corteSucursal()
+        ESCRIBIR("Total General: ", totalGral)
+        CERRAR(archStock); CERRAR(archSalida)
+FIN_ACCION

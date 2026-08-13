@@ -1,0 +1,148 @@
+ACCION caminoslitoral ES
+    Ambiente
+        fechas, vehiculo, salida: secuencia de caracter
+        f, v: caracter
+        
+        // Variables de control de campos
+        categoria: caracter
+        tiene_desc: caracter
+        feriado: logico
+        
+        // Variables de acumuladores e informes
+        total_recaudado, precio_base, desc, total_dia: real
+        cat1, cat2, cat3, cat4, cat5, total_vehiculos: entero
+        
+        // Variables para almacenar la patente y la hora
+        pat1, pat2, pat3, pat4, pat5: caracter
+        h1, h2, h3, h4: caracter
+
+        // Función ya implementada según enunciado
+        FUNCION obtenerDescuento(p1, p2, p3, p4, p5: caracter): real
+
+        // Procedimiento adaptado correctamente (con parámetros por REF)
+        PROCEDIMIENTO patente(x: entero; c: caracter; REF p1, p2, p3, p4, p5: caracter) ES
+            SEGUN x HACER
+                1: p1 := c 
+                2: p2 := c
+                3: p3 := c
+                4: p4 := c
+                5: p5 := c 
+            FIN_SEGUN
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO contar_categoria(cat: caracter; REF c1, c2, c3, c4, c5: entero) ES
+            SEGUN cat HACER
+                "1": c1 := c1 + 1
+                "2": c2 := c2 + 1
+                "3": c3 := c3 + 1
+                "4": c4 := c4 + 1
+                "5": c5 := c5 + 1
+            FIN_SEGUN
+        FIN_PROCEDIMIENTO
+
+        FUNCION obtenerPrecioBase(cat: caracter): real ES
+            SEGUN cat HACER
+                "1": obtenerPrecioBase := 1000.0
+                "2": obtenerPrecioBase := 1500.0
+                "3": obtenerPrecioBase := 2000.0
+                "4": obtenerPrecioBase := 2500.0
+                "5": obtenerPrecioBase := 3000.0
+            FIN_SEGUN
+        FIN_FUNCION
+
+    Proceso
+        ARR(fechas); ARR(vehiculo); CREAR(salida)
+        AVANZAR(fechas, f); AVANZAR(vehiculo, v)
+
+        // Inicialización de contadores globales (Punto C)
+        cat1 := 0; cat2 := 0; cat3 := 0; cat4 := 0; cat5 := 0
+        total_vehiculos := 0
+
+        MIENTRAS NFDS(fechas) HACER
+            // 1. Procesar la secuencia de fechas para el día actual
+            // Consumir los 8 caracteres de ddmmaaaa (no los necesitamos guardar)
+            PARA i := 1 HASTA 8 HACER
+                AVANZAR(fechas, f)
+            FIN_PARA
+
+            // El noveno carácter es el indicador de feriado
+            SI f = "S" ENTONCES
+                feriado := Verdadero
+            SINO
+                feriado := Falso
+            FIN_SI
+            AVANZAR(fechas, f) // Deja el cabezal listo en el primer carácter del siguiente día
+
+            // 2. Inicializar acumulador del día actual (Punto B)
+            total_dia := 0.0
+
+            // 3. Procesar los vehículos del día hasta encontrar el separador "-" o FDS
+            MIENTRAS (v <> "-") Y (NFDS(vehiculo)) HACER
+                total_vehiculos := total_vehiculos + 1
+                
+                // Extraer Categoría
+                categoria := v
+                contar_categoria(categoria, cat1, cat2, cat3, cat4, cat5)
+                precio_base := obtenerPrecioBase(categoria)
+                AVANZAR(vehiculo, v)
+
+                // Extraer TieneDescuento
+                tiene_desc := v
+                AVANZAR(vehiculo, v)
+
+                // Extraer HHMM (4 caracteres)
+                h1 := v; AVANZAR(vehiculo, v)
+                h2 := v; AVANZAR(vehiculo, v)
+                h3 := v; AVANZAR(vehiculo, v)
+                h4 := v; AVANZAR(vehiculo, v)
+
+                // Extraer Patente (5 caracteres) utilizando el procedimiento
+                PARA i := 1 HASTA 5 HACER
+                    patente(i, v, pat1, pat2, pat3, pat4, pat5)
+                    AVANZAR(vehiculo, v)
+                FIN_PARA
+
+                // Calcular el costo de este vehículo
+                SI tiene_desc = "S" ENTONCES
+                    desc := obtenerDescuento(pat1, pat2, pat3, pat4, pat5)
+                    total_dia := total_dia + (precio_base * (1.0 - desc))
+                SINO
+                    total_dia := total_dia + precio_base
+                FIN_SI
+
+                // Evaluar Punto A: Categoría 3 en día Feriado
+                SI (categoria = "3") Y (feriado = Verdadero) ENTONCES
+                    // Escribir HHMM
+                    ESCRIBIR(salida, h1); ESCRIBIR(salida, h2)
+                    ESCRIBIR(salida, h3); ESCRIBIR(salida, h4)
+                    // Escribir Patente
+                    ESCRIBIR(salida, pat1); ESCRIBIR(salida, pat2)
+                    ESCRIBIR(salida, pat3); ESCRIBIR(salida, pat4)
+                    ESCRIBIR(salida, pat5)
+                    // Separador de vehículos
+                    ESCRIBIR(salida, "-")
+                FIN_SI
+            FIN_MIENTRAS
+
+            // Informar el total recaudado del día (Punto B)
+            ESCRIBIR("El total recaudado en el día es: $", total_dia)
+
+            // Si salimos porque chocamos con el "-", debemos consumirlo para avanzar al próximo día
+            SI v = "-" ENTONCES
+                AVANZAR(vehiculo, v)
+            FIN_SI
+        FIN_MIENTRAS
+
+        // Emitir Informe Global: Porcentaje de vehículos por categorías (Punto C)
+        SI total_vehiculos > 0 ENTONCES
+            ESCRIBIR("Porcentaje Cat 1: ", (cat1 / total_vehiculos) * 100, "%")
+            ESCRIBIR("Porcentaje Cat 2: ", (cat2 / total_vehiculos) * 100, "%")
+            ESCRIBIR("Porcentaje Cat 3: ", (cat3 / total_vehiculos) * 100, "%")
+            ESCRIBIR("Porcentaje Cat 4: ", (cat4 / total_vehiculos) * 100, "%")
+            ESCRIBIR("Porcentaje Cat 5: ", (cat5 / total_vehiculos) * 100, "%")
+        SINO
+            ESCRIBIR("No se registraron vehículos en el período histórico.")
+        FIN_SI
+
+        CERRAR(fechas); CERRAR(vehiculo); CERRAR(salida)
+FIN_ACCION

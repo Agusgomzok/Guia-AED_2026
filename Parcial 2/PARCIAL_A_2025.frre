@@ -1,0 +1,99 @@
+/*La red de estaciones de carga urbana para vehículos eléctricos (VE) dispone de un sistema de monitoreo que
+registra las sesiones de carga realizadas durante el mes de JUNIO. La información se encuentra ordenada por
+Número de Estación, Tipo de Vehículo, y Número de Carga, y para cada sesión de carga se registra:
+Nro. de Estación Tipo de Vehículo
+
+(SD, SV, UT) Nro. Carga Fecha de carga Duración carga
+
+(minutos) Costo carga
+
+Nota: SD: Sedan. SV: Suv y UT: Utilitario
+Se pide escribir un algoritmo para:
+a) Listar todas las cargas de la primera quincena.
+b) Mostrar el total recaudado por estación y por tipo de vehículo.
+c) Crear un archivo de salida que contenga, por cada estación:
+• Número de Estación
+• Total recaudado en vehículos de tipo UTILITARIO
+d) Informar cuáles son las estaciones de carga que tuvieron mayor recaudación en vehículos tipo SEDAN que en
+vehículos tipo UTILITARIO.*/
+ACCION red_estaciones ES
+    Ambiente
+
+        fecha = Registro
+            aa:entero
+            mm:1..12
+            dd:1..31
+        Fin_Registro
+
+        reg_carga = Registro
+            nro_estacion:entero
+            tipo_vehiculo:("SD", "SV", "UT")
+            nro_carga:entero
+            fecha_carga:fecha
+            duracion:entero
+            costo_carga:real
+        Fin_Registro
+
+        arch.carga: ARCHIVO ORDENADO POR nro_estacion, tipo_vehiculo, nro_carga.
+        reg:reg_carga
+
+        arch_salida: archivo de Salida
+        reg_salida: salida
+
+    res_estacion: N(4)
+    res_vehiculo: AF(2)
+
+
+        PROCEDIMIENTO corte_vehiculo() ES
+                ESCRIBIR("VEHICULO:", res_vehiculo, "TOTAL:", totXVehiculo)
+                totXRegistro:= totXRegistro + totXVEhiculo
+
+                totXVehiculo:= 0
+                res_vehiculo:= res_carga.vehículo
+
+        FIN_PROCEDIMIENTO
+
+        PROCEDIMIENTO corte_estacion() ES
+            ESCRIBIR("ESTACION",res_estacion, "TOTAL:",totXEstacion)
+            totalGral:= totalGral + totXEstacion
+
+            totXEstacion:= 0
+            res_estacion := reg_carga
+
+            totXEstacion:= 0
+            red_estaciones := res_carga.estaciones
+        FIN_PROCEDIMIENTO
+
+
+
+
+
+        PROCEDIMIENTO tratarRegistro() ES
+                SI (reg_carga.stockActual < regStock.stockSeguridad) ENTONCES
+                    totXRubro := totXRubro + 1
+                    ESCRIBIR(sucursal, regStock.codSuc)
+                    ESCRIBIR(rubro, regStock.rubro)
+                    ESCRIBIR("Articulo: ", regStock.codArticulo)
+                FIN_SI
+        FIN_PROCEDIMIENTO
+
+
+
+
+
+
+
+
+
+
+
+        PROCEDIMIENTO tratarCorte() ES
+                
+        FIN_PROCEDIMIENTO
+
+
+
+
+    Proceso
+        
+FIN_ACCION
