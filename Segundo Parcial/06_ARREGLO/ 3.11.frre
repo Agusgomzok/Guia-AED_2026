@@ -1,0 +1,23 @@
+//Genere un único algoritmo que resuelva las 3 consignas del ejercicio anterior.
+accion ej 3.11 es
+    ambiente
+    pelicula = registro
+        titulo: AN(49)
+        director: AN(30)
+        categoria: AN(20)
+        cant: entero
+        alquilado: ("si", "no")
+    finregistro
+    pelis: arreglo de [1..100] de pelicula
+    i: 1..100
+    cat: AN(20)
+
+    proceso
+        ESCRIBIR("ingrese categoria a buscar")
+        leer(cat)
+        para i:= 1 a 100 hacer
+            Si pelis[i].categoria = cat entonces
+                escribir("titulo:",pelis[i.titulo])
+            finsi
+        finpara
+finaccion

@@ -1,0 +1,44 @@
+/*Considerando un arreglo de 50 números enteros, confeccione un algoritmo para resolver las siguientes consignas:
+
+Modificar el arreglo dado, de modo que todos sus elementos sean múltiplos de 3.
+Crear otro arreglo que contenga los números que no cumplieron la condición.
+Informar cuántos números cumplieron la condición.*/
+
+Accion 3.4 hacer
+Ambiente
+	Num: arreglo de (1..50) de entero
+	NoCumplieron: arreglo de (1..50) de entero
+	i, j, cumplieron, multi: entero
+
+proceso
+	cumplieron := 0
+	j := 0
+
+	para i := 1 a 50 hacer
+		escribir("Ingrese el numero ", i, ": ")
+		leer(Num(i))
+	finpara
+
+	para i := 1 a 50 hacer
+		si Num(i) MOD 3 = 0 entonces
+			cumplieron := cumplieron + 1
+		sino
+			j := j + 1
+			NoCumplieron(j) := Num(i)
+			multi := 3 - (Num(i) MOD 3)
+			Num(i) := Num(i) + multi
+		finsi
+	finpara
+
+	escribir("Arreglo modificado:")
+	para i := 1 a 50 hacer
+		escribir(Num(i))
+	finpara
+
+	escribir("Numeros que no cumplieron la condicion:")
+	para i := 1 a j hacer
+		escribir(NoCumplieron(i))
+	finpara
+
+	escribir("Cantidad de numeros que cumplieron: ", cumplieron)
+finaccion

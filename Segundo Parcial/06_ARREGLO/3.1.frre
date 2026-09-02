@@ -1,0 +1,50 @@
+/*Para cada una de las consignas siguientes, genere un algoritmo que permita solucionarla (3 algoritmos) usando un arreglo de 100 números enteros:
+
+Almacenar 100 números.
+Localizar el número de mayor valor y el de menor valor, informar sus valores y sus posiciones.
+Contar y sumar todos los números pares.
+*/
+ACCION arreglo1 ES
+    Ambiente
+        num: arreglo de [1..100] de entero
+        i: entero
+
+        pos_max, pos_min:entero
+
+        cant_par, acum_par: entero
+    Proceso
+
+        cant_par := 0
+        acum_par := 0
+
+        pos_max := 1
+        pos_min := 1
+
+
+        para i:= 1 a 100 hacer
+            escribir("Ingrese la posición de ", "i", "del arreglo")
+            leer(num[i])
+        finpara
+
+        para i:= 1 a 100 hacer
+            si num[i] > num[pos_max] entonces
+                pos_max := i
+            sino
+                si num[i] < num[pos_min] enotnces
+                    pos_min := i
+                finsi
+            finsi
+
+            si num[i] MOD 2 = 0 entonces
+                cant_par :=  cant_par + 1
+                acum_par := acum_par + num[i]
+            finsi
+        finpara
+
+        escribir("el mayor es", num[pos_max], "y su posicion es", pos_max)
+        escribir("el menor es", num[pos_min], "y su posicion es", pos_min)
+
+        escribir("la cantidad de pares es", cant_par)
+        escribir("la suma de los pares es", acum_par)
+
+FIN_ACCION
