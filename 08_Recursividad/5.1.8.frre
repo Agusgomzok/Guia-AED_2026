@@ -1,0 +1,130 @@
+dado un vector de 10 numeros enteros, calcular la sumas de sus elementos
+
+//caaso base n vale 1 y el recursivo es sumando los siguientes elementos
+
+ACCION 5.1.8 ES
+    Ambiente
+        vector = aareglo [1..10] de entero
+        i: entero
+    Proceso
+
+
+        escribir ("Ingrese 10 numeros enteros") //cargar los 10 elementos del vector
+        para i:= 1 hasta 10 hacer
+            leer (vector[i])
+        finpara
+
+    suma:= 0 //inicializacion del acumulador
+
+
+        para i:= 1 hasta 10 hacer  //Recorrido del vector para calcular la suma
+            suma:= suma + vector[i]
+        finpara
+
+        escribir ("La suma de los elementos del vector es: ", suma)
+FIN_ACCION
+
+=============================================================================================
+
+planteo formal: suma_vector(vector, n)
+caso base
+    si n = 1 entonces; 
+        vector[1]
+
+caso recursivo
+si n> 1 entonces
+    vector[n] + suma_vector(vector, n-1)
+
+funcion suma_vector(vector: arreglo [1..10] de entero, i): entero es
+
+    si i = 1 entonces
+        suma_vector := vector[1]
+    sino
+        suma_vector := vector[i] + suma_vector(vector, i-1)
+    finsi
+finfuncion
+
+
+ejercicio extra finalizar la funcion para calcular el promedio de elementos de un arreglo de nuemeros enteros que contienen 10 posiciones
+
+ejercicio extra realizar una funcion para calcular el promedio de los elementos de un arreglo de numeros entero que contiene 10 posiciones, sumar aquellos valores que son mayores a 6 (aprobaron)
+=================================================================================================
+
+FUNCION suma_vector(vector: ARREGLO [1..10] de Entero; i: Entero): Entero ES
+    PROCESO
+        SI i = 1 ENTONCES
+            suma_vector := vector[1]                        // Caso Base
+        SINO
+            suma_vector := vector[i] + suma_vector(vector, i - 1) // Caso Recursivo
+        FIN_SI
+FIN_FUNCION
+
+ACCION PrincipalSumaRecursiva ES
+    AMBIENTE
+        v: ARREGLO [1..10] de Entero
+        j: Entero
+        resultado: Entero
+
+    PROCESO
+        // 1. Carga del vector
+        PARA j := 1 HASTA 10 HACER
+            ESCRIBIR("Ingrese el elemento ", j, ":")
+            LEER(v[j])
+        FIN_PARA
+
+        // 2. Llamada recursiva iniciando desde la última posición (10)
+        resultado := suma_vector(v, 10)
+
+        // 3. Muestra del resultado final
+        ESCRIBIR("La suma total recursiva es: ", resultado)
+FIN_ACCION
+=================================================================================================
+
+//ejercicio extra realizar una funcion para calcular el promedio de los elementos de un arreglo de numeros entero que contiene 10 posiciones, sumar aquellos valores que son mayores a 6 (aprobaron)
+Funcion CalcularPromedioYSumaAprobados(vector: ARREGLO [1..10] de Entero; n: Entero; VAR promedio: Real): Entero ES
+    AMBIENTE
+        sumaTotal: Entero
+        sumaAprobados: Entero
+        i: Entero
+
+    PROCESO
+        sumaTotal := 0
+        sumaAprobados := 0
+
+        PARA i := 1 HASTA n HACER
+            sumaTotal := sumaTotal + vector[i]
+            SI vector[i] > 6 ENTONCES
+                sumaAprobados := sumaAprobados + vector[i]
+            FIN_SI
+        FIN_PARA
+
+        promedio := sumaTotal / n
+        CalcularPromedioYSumaAprobados := sumaAprobados
+ACCION EjercicioExtraPromedioYSumarAprobados ES
+    AMBIENTE
+        notas: ARREGLO [1..10] de Entero
+        j: Entero
+        promedioGeneral: Real
+        totalAprobados: Entero
+
+    PROCESO
+        // 1. Carga del arreglo de 10 posiciones[cite: 2, 5]
+        ESCRIBIR("=== Carga del arreglo ===")
+        PARA j := 1 HASTA 10 HACER
+            ESCRIBIR("Ingrese el entero para la posición ", j, ":")
+            LEER(notas[j])
+        FIN_PARA
+
+        // 2. Invocación de la función[cite: 1, 8]
+        totalAprobados := CalcularPromedioYSumaAprobados(notas, 10, promedioGeneral)
+
+        // 3. Muestra de resultados
+        ESCRIBIR("-------------------------------------------------")
+        ESCRIBIR("El promedio general de los 10 elementos es: ", promedioGeneral)
+        ESCRIBIR("La suma de los elementos mayores a 6 es: ", totalAprobados)
+        ESCRIBIR("-------------------------------------------------")
+FIN_ACCION
+
+
+
+

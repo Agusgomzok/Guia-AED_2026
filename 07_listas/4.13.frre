@@ -1,0 +1,40 @@
+accion  
+    ambiente
+    funcion esta_orenado(prim: puntero a nodo): logico
+        p:= cab
+        mientras *p.prox <> ult y *p.dato <= *(*p.prox).dato entonces
+            p:= *p.prox
+        fin_mientras
+
+
+
+        si *p.prox <= *(*p.prox).dato entonces
+            esta_orenado:= verdadero
+        sino
+            esta_orenado:= falso
+        finsi  
+    fin_funcion
+    proceso
+        si prim = nill entonces
+            escribir "la lista esta vacia"
+        sino
+            si prim = ult entonces
+                escribir (" la lista tiene un solo elemento, no hay repetidos")
+            sino
+
+                si esta_orenado(prim) enttonces
+                    //depurar
+                    p:= prim
+                    mientras p <> ult entonces
+                        si ................... entonces
+                            eliminar(p)
+                        finsi
+                        p:= *p.prox
+                    fin_mientras
+                    //fin depurar
+                    escribir ("la lista esta depurada")
+                sino
+                    escribir ("la lista no esta ordenada, no se puede depurar")
+                finsi
+            finsi
+        fin_si

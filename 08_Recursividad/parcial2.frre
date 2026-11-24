@@ -1,0 +1,15 @@
+//dado un numero natural N, halla la suma de los naturales consecutivos desde 1 hacta N, ingresado por el usuario. ejemplo N=3 devuevlve total:= 1+2+3=6
+
+funcion sumarconsecutivos(n: N(3)): N(5) es
+    si n = 1 enotnces
+        sumarconsecutivos := 1
+    sino
+        sumaconsecutivos := n + sumarconsecutivos(n -1
+        )
+accion sumarconsecutivos es
+    ambiente
+        n: N(3)
+        total:(5)
+    proceso
+        escribir("ingrese un numero natural N:")
+        leer(n)

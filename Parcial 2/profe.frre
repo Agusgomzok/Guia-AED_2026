@@ -1,0 +1,13 @@
+ACCION 2parcial-AED2025 ES
+    Ambiente
+        equipos = Registro
+            tipo_equipo
+            nro_equipo
+            fehca_adquisicion
+            fecha_ult_mantenimiento
+            horas_uso
+            
+        Fin_Registro
+    Proceso
+        
+FIN_ACCION

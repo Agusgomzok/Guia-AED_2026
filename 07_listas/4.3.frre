@@ -1,0 +1,13 @@
+//Dada una lista simplemente encadenada de números diseñar un algoritmo que calcule en forma independiente: La suma de los números impares, y la suma de los números pares.
+
+NOdo = reguistro
+    dato: entero
+    sig: puntero a nodo
+fin_registro
+
+prim, p, a, q: puntero a nodo
+
+
+
+
+

@@ -29,3 +29,105 @@ ACCION 2.2.1 ES
     Proceso
         
 FIN_ACCION
+
+
+ACCION Parcial_Ejercicio2 ES
+    AMBIENTE
+        // ... (Se asume la definición de R_Novedad del Ej. 1)[cite: 11]
+        
+        R_Usuario = Registro
+            id_usuario: Entero
+            dni: Entero
+            sexo: Caracter
+            apellido_y_nombre: AN(50)
+            lugar_de_origen: Entero // 1..4[cite: 11]
+            edad: Entero
+        Fin_Registro
+
+        Mov_Novedades: Archivo de R_Novedad
+        // Declaración formal de Organización Indexada[cite: 11, 15]
+        Arch_Usu: Archivo de R_Usuario INDEXADO por id_usuario 
+
+        reg_nov: R_Novedad
+        reg_usu: R_Usuario
+
+        // Estructuras Estáticas (Arreglos)[cite: 11]
+        Costos: Arreglo [1..6] de Real
+        Matriz_Recaudacion: Arreglo [1..6, 1..4] de Real
+        Desc_Origen: Arreglo [1..4] de AN(30)
+        
+        // Variables auxiliares
+        c, o: Entero
+        horas_prestamo: Entero
+        importe: Real
+        monto_limite, total_origen: Real
+
+    PROCESO
+        // 1. Inicialización de Arreglos
+        Desc_Origen[1] := "Chaco"; Desc_Origen[2] := "Otra provincia argentina"
+        Desc_Origen[3] := "Pais limitrofe"; Desc_Origen[4] := "Otro pais"
+        
+        PARA c := 1 HASTA 6 HACER
+            // Se asume el ingreso previo de los costos por hora[cite: 11]
+            LEER(Costos[c]) 
+            PARA o := 1 HASTA 4 HACER
+                Matriz_Recaudacion[c, o] := 0
+            FIN_PARA
+        FIN_PARA
+
+        ESCRIBIR("Ingrese el monto a superar para el informe B: ")
+        LEER(monto_limite)
+
+        ABRIR E/(Mov_Novedades); LEER(Mov_Novedades, reg_nov)
+        ABRIR E/(Arch_Usu)
+
+        // 2. Procesamiento Lineal con Acceso Directo[cite: 15]
+        MIENTRAS NFDA(Mov_Novedades) HACER
+            
+            // Solo nos interesan los préstamos para la recaudación[cite: 11]
+            SI reg_nov.tipo_novedad = 2 ENTONCES
+                
+                // Preparación de la clave y Acceso Directo[cite: 15]
+                reg_usu.id_usuario := reg_nov.id_usuario
+                LEER(Arch_Usu, reg_usu)
+                
+                SI EXISTE ENTONCES
+                    // Cálculo del importe
+                    horas_prestamo := diff(reg_nov.hora_inicio, reg_nov.hora_fin)
+                    importe := horas_prestamo * Costos[reg_nov.nro_circuito]
+                    
+                    // Acumulación en la matriz usando los datos cruzados
+                    c := reg_nov.nro_circuito
+                    o := reg_usu.lugar_de_origen
+                    Matriz_Recaudacion[c, o] := Matriz_Recaudacion[c, o] + importe
+                SINO
+                    ESCRIBIR("Error: El usuario ", reg_nov.id_usuario, " no existe.")
+                FIN_SI
+                
+            FIN_SI
+            LEER(Mov_Novedades, reg_nov)
+        FIN_MIENTRAS
+
+        // 3. Emisión de Informes Estadísticos[cite: 11]
+        ESCRIBIR("--- RECAUDACIÓN POR CIRCUITO Y ORIGEN ---")
+        PARA c := 1 HASTA 6 HACER
+            ESCRIBIR("Circuito Nro: ", c)
+            PARA o := 1 HASTA 4 HACER
+                ESCRIBIR(Desc_Origen[o], ": $", Matriz_Recaudacion[c, o])
+            FIN_PARA
+        FIN_PARA
+
+        ESCRIBIR("--- LUGARES DE ORIGEN QUE SUPERARON EL MONTO ---")
+        PARA o := 1 HASTA 4 HACER
+            total_origen := 0
+            PARA c := 1 HASTA 6 HACER
+                total_origen := total_origen + Matriz_Recaudacion[c, o]
+            FIN_PARA
+            
+            SI total_origen > monto_limite ENTONCES
+                ESCRIBIR(Desc_Origen[o], " (Recaudó: $", total_origen, ")")
+            FIN_SI
+        FIN_PARA
+
+        CERRAR(Mov_Novedades); CERRAR(Arch_Usu)
+FIN_ACCION

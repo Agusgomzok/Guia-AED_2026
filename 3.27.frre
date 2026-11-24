@@ -1,0 +1,17 @@
+/*Se desea efectuar una estadística de ventas. Se cuenta para ello con una secuencia de las facturas emitidas, las cuales son identificadas por un Número; dicha secuencia contiene información relativa al cliente: su Número y Zona a la cual pertenece, como así también el Tipo de mercadería entregada, la Cantidad de unidades, el total gravado, el total exento de IVA y el valor del IVA. Construya un algoritmo que emita por zona, y dentro de la zona por tipo de mercadería el total de unidades vendidas, el total gravado, el total exento y el total de IVA, y además un total general con la misma información. Hay 9 zonas y 4 tipos de mercadería.*/
+ACCION 3.27 ES
+    Ambiente
+        
+    Proceso
+        
+FIN_ACCION
+
+    plantas 
+    /*en el corte de control tenes el archivo ordenado por los campos que debes emitir totales y los procesos estadisticos no (puede estar ordenado por otros campos pero no lo que necesitamos ) (PAIS;PROVINCIA)
+    si no dice ordenado por o indexado por es una archivo secuecial deshordenado
+
+
+    */
+    accion parcial 1 es
+        ambiente
+        

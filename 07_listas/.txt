@@ -1,0 +1,23 @@
+prim er pregunta 
+
+Si prim = NILL para ver si es nulo
+si prim = p
+
+
+
+//definir un nodo
+
+P: puntero a nodo
+
+Nodo = Registro  ----> un nodo siempre es un Registro
+    dato: [tipo de dato]
+    prox: puntero a nodo -----> posicion de memoria donde esta mi proximo Nodo
+fin_Registro
+
+*p.dato:=  dato --------> me dirige a la posicion de memoria y va a mostrar lo que contega esa direccion de memoria
+
+p^.dato:=  dato  ------------> me dirige a la posicion de memoria y guarda lo que tenda dato en la direccion e memoria
+
+
+
+

@@ -1,0 +1,25 @@
+//determine recursivamente si un numero es par o o impar usando solo las operaciones de suma y resta
+
+panteo formal: espar
+
+planteo formal: espar 
+
+caso base
+ *veedaero, si num = 0
+*falso, si num = 1
+
+caso recursivo
+espar (num -2), si num > 1
+
+funcion eespar(num:N(3)): logico es
+    si n = 0 entonces
+        espar := verdadero
+    sino
+        si n = 1 entonces
+            espar := falso
+        sino
+            espar := espar(n - 2)
+        finsi
+    finsi
+finfuncion
+
