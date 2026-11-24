@@ -1,0 +1,263 @@
+/*La Universidad llevó adelante el evento hackathon "HackaTec 2025", donde participaron equipos de estudiantes que
+desarrollaron soluciones tecnológicas innovadoras a los desafíos que enfrentan diferentes industrias. Para la resolución
+de los desafíos los equipos utilizaron algunas de las siguientes tecnologías: robótica (ro) - mecatrónica (mc) - inteligencia
+artificial (ia) - programación (pr) - ciencia de datos (cd)
+El jurado evaluó y puntuó a cada proyecto según los siguientes criterios:
+1. Innovación y creatividad (ic): 0 a 35
+2. Impacto y aplicabilidad (ia): 0 a 25
+3. Calidad del prototipo o solución y su presentación (cp): 0 a 40.
+Además, cada equipo recibió un punto extra por cada una de las tecnologías utilizadas en el diseño de la propuesta.
+Quedando definida la fórmula para el cálculo del puntaje final de la siguiente manera:
+Puntaje_final = ∑ (puntos_por_criterio)+∑ (puntos_por_tecnologia)
+Por otro lado, el jurado evaluó el desempeño del líder de cada equipo, otorgando un puntaje de 1 a 10.
+Toda la información del evento se encuentra registrada en los siguientes archivos:
+• Archivo secuencial de Inscripciones, ordenado por id_equipo, que contiene los siguientes datos:
+id_equipo nombre_equipo fecha_inscripcion tecnologias_utilizadas [ro,mc,ia,pr,cd]
+Donde tecnologias_utilizadas es un vector de 5 elementos que indica si se usó o no cada tecnología, en el orden
+indicado.
+• Archivo de Puntajes, indexado por “id_equipo” con la valoración de cada jurado por cada criterio:
+id_equipo puntaje_por_criterio [ic,ia,cp] puntaje_lider
+Se pide:
+1. Crear una lista doblemente enlazada que contenga: nombre_equipo, puntaje_total, puntaje_lider. La lista debe estar
+ordenada por puntaje_total de forma ascendente.
+2. Informar cuántos equipos usaron 3 o más tecnologías.
+3. Mostrar los datos de los equipos ganadores de primer, segundo y tercer puesto. En caso de empate, se tendrán en
+cuenta los puntos obtenidos por el líder para desempatar.*/
+ACCION HackTec ES
+    Ambiente
+        Inscripciones = Registro
+            id_equipo:N(10)
+            nombre_equipo:AF(50)
+            fecha_inscripcion = Registro
+                dd:1..31
+                mm:1..12
+                aa:N(4)
+            Fin_Registro
+            tecnologias_utilizadas: arreglo [1..5] de logico //ro, mc, ia, pr, cd
+        Fin_Registro
+
+        Puntajes = Registro
+            id_equipo:N(10)
+            puntaje_por_criterio:  arreglo [1..3] de entero
+            puntaje_lider: 1..10
+        Fin_Registro
+
+        insc: archivos de Inscripciones ordenado por id_equipo
+        in: Inscripciones
+
+        punt: archivos de Puntajes indexado por id_equipo
+        p: Puntajes
+
+        nodo = Registro
+            nombre_equipo:AF(50)
+            puntaje_total: N(3)
+            puntaje_lider: 1..10
+            prox:puntero a nodo
+            ant:puntero a nodo
+        Fin_Registro
+
+        p,q, prim, prox: puntero a nodo
+
+        eqt3t: entero
+        cont3: entero
+    Proceso
+        ABRIR E/(insc); LEER(insc, in)
+        ABRIR E/(punt)
+        prim:= nil
+        ult: nil
+
+        MIENTRAS NFDA(insc) HACER //entiendo que id equipo no se repite
+            NUEVO(q)
+            *q.nombre_equipo:= in.nombre_equipo
+            *q.puntaje_total:= 0
+            p.id_equipo:= in.id_equipo
+            LEER(punt, p)
+            SI (EXISTE) ENTONCES
+                PARA i := 1 HASTA 3 HACER
+                    *q.puntaje_total:= *q.puntaje_total + p.puntaje_por_criterio[i]
+                FIN_PARA
+                *q.puntaje_lider:= p.puntaje_lider
+            FIN_SI
+            PARA i := 1 HASTA 5 HACER
+                SI (in.tecnologias_utilizadas[i] = v) ENTONCES
+                    SI (*q.puntaje_total < 100) ENTONCES //compruebo si el puntaje no llego a 100 todavia
+                    *q.puntaje_total:= *q.puntaje_total + 1
+                    FIN_SI
+                    cont3:= cont3 + 1
+                FIN_SI
+            FIN_PARA
+            SI (cont3 >= 3) ENTONCES
+                eqt3t:= eqt3t + 1
+            FIN_SI
+            //--------------------------------------------------------------------------------------------
+            //nodo cargadi por completo : carga ordenada
+            SI (prim = nil) ENTONCES//lsita vacia
+                prim := q
+                ult:= q
+                *q.prox:= nil
+                *q.ant:= nil
+            SINO
+                p:= prim
+                MIentras (p = <> nill) y (*p.puntaje_total < *q.puntaje_total) Hacer
+                    p:= *p.prox
+                FIN_MIENTRAS
+                SI (p = prim) ENTONCES // por delante del primer elemento
+                    *q.prox := p
+                    *p.ant:= q
+                    *q.ant:= nil
+                    prim := q
+                SINO
+                    SI (p = nill) ENTONCES
+                        *p_ult.prox := q
+                        *q.ant:= ult
+                        ult:= q
+                        *q.prox:= nil
+                    SINO
+                        SI (*p.puntaje_total = *q.puntaje_total) y (p.puntaje_lider < *q.puntaje_lider) ENTONCES
+                            *q.ant := p
+                            *q.prox := p.prox
+                            *(*q.ant).prox := q
+                            *(*q.prox).ant:=q
+                        SINO // se concidera los 2 csos de p > q
+                            *q.prox:= p
+                            *q.ant:= *p.ant
+                            *(*q.ant).prox := q
+                            *p.ant := q
+                        FIN_SI
+                    FIN_SI
+                FIN_SI
+            FIN_SI
+        FIN_MIENTRAS
+        ESCRIBIR("los equipos ganadores del 1 al 3 son ")
+        p:= ult
+        PARA i := 1 HASTA 3 HACER
+            ESCRIBIR(i, "puesto")
+            ESCRIBIR(*p.nombre_equipo)
+            ESCRIBIR(*p.puntaje_total)
+            ESCRIBIR(*p.puntaje_lider)
+            p:= *p.ant
+        FIN_PARA
+        ESCRIBIR("en total los equipos que usaron 3 tecnologias fueron",eqt3t)
+        Cerrar(punt)
+        cerrar(insc)
+FIN_ACCION
+
+===========================================================================================================
+========================================================================ECHO POR IA===========================================================================
+ACCION HackTec ES
+    Ambiente
+        Inscripciones = Registro
+            id_equipo: N(10)
+            nombre_equipo: AF(50)
+            fecha_inscripcion = Registro
+                dd: 1..31
+                mm: 1..12
+                aa: N(4)
+            Fin_Registro
+            tecnologias_utilizadas: arreglo [1..5] de logico // ro, mc, ia, pr, cd
+        Fin_Registro
+
+        Puntajes = Registro
+            id_equipo: N(10)
+            puntaje_por_criterio: arreglo [1..3] de entero
+            puntaje_lider: 1..10
+        Fin_Registro
+
+        insc: archivo de Inscripciones ordenado por id_equipo
+        reg_in: Inscripciones
+
+        punt: archivo de Puntajes indexado por id_equipo
+        reg_p: Puntajes
+
+        nodo = Registro
+            nombre_equipo: AF(50)
+            puntaje_total: N(3)
+            puntaje_lider: 1..10
+            prox: puntero a nodo
+            ant: puntero a nodo
+        Fin_Registro
+
+        p, q, prim, ult: puntero a nodo
+        eqt3t, cont3, i: entero
+
+    Proceso
+        ABRIR E/(insc); LEER(insc, reg_in)
+        ABRIR E/(punt)
+        prim := nil
+        ult := nil
+        eqt3t := 0
+
+        MIENTRAS NFDA(insc) HACER
+            NUEVO(q)
+            *q.nombre_equipo := reg_in.nombre_equipo
+            *q.puntaje_total := 0
+            
+            reg_p.id_equipo := reg_in.id_equipo
+            LEER(punt, reg_p)
+            SI (EXISTE) ENTONCES
+                PARA i := 1 HASTA 3 HACER
+                    *q.puntaje_total := *q.puntaje_total + reg_p.puntaje_por_criterio[i]
+                FIN_PARA
+                *q.puntaje_lider := reg_p.puntaje_lider
+            FIN_SI
+
+            cont3 := 0
+            PARA i := 1 HASTA 5 HACER
+                SI (reg_in.tecnologias_utilizadas[i] = V) ENTONCES
+                    *q.puntaje_total := *q.puntaje_total + 1
+                    cont3 := cont3 + 1
+                FIN_SI
+            FIN_PARA
+
+            SI (cont3 >= 3) ENTONCES
+                eqt3t := eqt3t + 1
+            FIN_SI
+
+            // Carga ordenada ascendente (por puntaje_total y desempate por puntaje_lider)
+            SI (prim = nil) ENTONCES // Caso 1: Lista vacía
+                prim := q
+                ult := q
+                *q.prox := nil
+                *q.ant := nil
+            SINO
+                p := prim
+                MIENTRAS (p <> nil) Y ((*p.puntaje_total < *q.puntaje_total) O ((*p.puntaje_total = *q.puntaje_total) Y (*p.puntaje_lider < *q.puntaje_lider))) HACER
+                    p := *p.prox
+                FIN_MIENTRAS
+
+                SI (p = prim) ENTONCES // Caso 2: Antes del primer elemento
+                    *q.prox := p
+                    *p.ant := q
+                    *q.ant := nil
+                    prim := q
+                SINO
+                    SI (p = nil) ENTONCES // Caso 4: Después del último elemento
+                        *ult.prox := q
+                        *q.ant := ult
+                        *q.prox := nil
+                        ult := q
+                    SINO // Caso 3: Intermedio (entre *p.ant y p)
+                        *q.prox := p
+                        *q.ant := *p.ant
+                        *(*p.ant).prox := q
+                        *p.ant := q
+                    FIN_SI
+                FIN_SI
+            FIN_SI
+
+            LEER(insc, reg_in)
+        FIN_MIENTRAS
+
+        ESCRIBIR("Los equipos ganadores del 1 al 3 son:")
+        p := ult
+        i := 1
+        MIENTRAS (p <> nil) Y (i <= 3) HACER
+            ESCRIBIR(i, "° puesto: ", *p.nombre_equipo, " - Puntaje: ", *p.puntaje_total, " - Líder: ", *p.puntaje_lider)
+            p := *p.ant
+            i := i + 1
+        FIN_MIENTRAS
+
+        ESCRIBIR("En total los equipos que usaron 3 o más tecnologías fueron: ", eqt3t)
+        CERRAR(punt)
+        CERRAR(insc)
+FIN_ACCION

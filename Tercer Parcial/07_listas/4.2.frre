@@ -7,7 +7,7 @@ ACCION Extraer_terminado_cero (PRIM:puntero a nodo; PRIM2:puntero a nodo) ES
             prox: puntero a nodo
         FIN_REGISTRO
 
-        p,q,SIG,ANT: puntero a nodo
+        p,q,SIG,ANT: puntero a nodoZ
     PROCESO
         p:= PRIM
         ANT:= NULL
